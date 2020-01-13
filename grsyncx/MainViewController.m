@@ -246,8 +246,8 @@
 	NSArray<NSString *> *additionalArgs =
 	[[_additionalOptsTextView.textStorage.string
 	  componentsSeparatedByString:@" "] filteredArrayUsingPredicate:
-	 [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary<NSString *,id> *bindings) {
-		return [evaluatedObject length] > 0;
+	 [NSPredicate predicateWithBlock:^BOOL(NSString *arg, NSDictionary<NSString *,id> *__unused bindings) {
+		return arg.length > 0;
 	}]];
 
 	if (additionalArgs.count)
@@ -317,7 +317,7 @@
 
 	observer = [[NSNotificationCenter defaultCenter] addObserverForName:
 	  NSFileHandleDataAvailableNotification object:handle
-	  queue:nil usingBlock:^(NSNotification *note) {
+	  queue:nil usingBlock:^(NSNotification *__unused note) {
 
 		NSData *data = [handle availableData];
 
@@ -330,7 +330,7 @@
 		[handle waitForDataInBackgroundAndNotify];
 	}];
 
-	task.terminationHandler = ^(NSTask *task) {
+	task.terminationHandler = ^(NSTask *__unused endedTask) {
 		[[NSNotificationCenter defaultCenter] removeObserver:observer];
 		observer = nil;
 	};

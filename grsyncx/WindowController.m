@@ -24,12 +24,12 @@
 	_actionsResponder = (id)self.contentViewController;
 }
 
-- (IBAction)simulateButton:(id)sender
+- (IBAction)simulateButton:(__unused id)sender
 {
 	[_actionsResponder didReceiveSimulateAction];
 }
 
-- (IBAction)executeButton:(id)sender
+- (IBAction)executeButton:(__unused id)sender
 {
 	[_actionsResponder didReceiveExecuteAction];
 }
