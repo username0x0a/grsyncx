@@ -45,7 +45,7 @@
 @property (nonatomic, weak) IBOutlet NSButton *showTransProgressButton;
 // --ignore-existing | Ignore files which already exist in the destination
 @property (nonatomic, weak) IBOutlet NSButton *ignoreExistingButton;
-// --sizeOnly | Skip file that match in size, ignore time and checksum
+// --size-only | Skip file that match in size, ignore time and checksum
 @property (nonatomic, weak) IBOutlet NSButton *sizeOnlyButton;
 // -u, --update | Skip files that are newer in the destination
 @property (nonatomic, weak) IBOutlet NSButton *skipNewerButton;
@@ -62,7 +62,7 @@
 @property (nonatomic, weak) IBOutlet NSButton *existingFilesButton;
 // -P | Same as --partial --progress
 @property (nonatomic, weak) IBOutlet NSButton *partialTransFilesButton;
-// --numeric-ids | Keep numeric uid/gid instead of mapping its names
+// --numeric-ids | Keep numeric UID/GID instead of mapping its names
 @property (nonatomic, weak) IBOutlet NSButton *noUIDGIDMapButton;
 // -l | Symbolic links are copied as such, do not copy link target file
 @property (nonatomic, weak) IBOutlet NSButton *preserveSymlinksButton;
@@ -110,6 +110,20 @@
 }
 
 
+#pragma mark - Actions
+
+
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
+{
+	NSAlert *alert = [[NSAlert alloc] init];
+	alert.messageText = title ?: @"";
+	alert.informativeText = message ?: @"";
+	alert.alertStyle = NSAlertStyleCritical;
+	[alert addButtonWithTitle:NSLocalizedString(@"Close", @"Button title")];
+	[alert beginSheetModalForWindow:self.view.window completionHandler:nil];
+}
+
+
 #pragma mark - UI actions
 
 
@@ -118,7 +132,7 @@
 	NSString *title = nil;
 	NSPathControl *pathCtrl = nil;
 
-	if (sender == _sourcePathChangeButton) {
+	if (sender == _sourcePathChangeButton || sender == _sourcePathCtrl) {
 		title = NSLocalizedString(@"Select Source folder", @"View label");
 		pathCtrl = _sourcePathCtrl;
 	} else {
@@ -126,20 +140,20 @@
 		pathCtrl = _destinationPathCtrl;
 	}
 
+	BOOL pickingDest = pathCtrl == _destinationPathCtrl;
+
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
 	panel.title = title;
+	panel.directoryURL = pathCtrl.URL;
 	panel.canChooseDirectories = YES;
 	panel.canCreateDirectories = YES;
-	panel.canChooseFiles = NO;
+	panel.canChooseFiles = !pickingDest;
 	panel.allowsMultipleSelection = NO;
 
 	[panel beginSheetModalForWindow:self.view.window
 	  completionHandler:^(NSModalResponse result) {
-		if (result != NSModalResponseOK)
-			return;
-		NSURL *url = [[panel URLs] firstObject];
-
-		pathCtrl.URL = url;
+		if (result == NSModalResponseOK)
+			pathCtrl.URL = panel.URLs.firstObject;
 	}];
 }
 
@@ -147,34 +161,32 @@
 {
 	SourceHelpPopupViewController *vc = [[SourceHelpPopupViewController alloc] init];
 
+	CGSize size = vc.view.bounds.size;
+	CGFloat inset = 12;
+	CGRect frame = CGRectMake(inset, inset, size.width-2*inset, size.height-2*inset);
+
+	NSTextField *desc = [[NSTextField alloc] initWithFrame:frame];
+	desc.editable = NO;
+	desc.selectable = NO;
+	desc.backgroundColor = [NSColor clearColor];
+	desc.bezeled = NO; desc.bordered = NO;
+	desc.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	desc.stringValue = NSLocalizedString(@"This settings allows to wrap contents of "
+		"the Source directory within a folder in the Destination path named same as "
+		"the Source directory.\n\nIf you have a couple of `example.*` files in your "
+		"Source path, wrapping them will put them to a `Destination/Source/example.*` "
+		"path.\n\nWithout wrapping, these files will be included directly at the "
+		"`Destination/example.*` path.", @"Source wrap popup help description");
+	[vc.view addSubview:desc];
+
+	NSRect rect = [sender convertRect:[sender bounds] toView:self.view];
+
 	NSPopover *helpPopover = [NSPopover new];
 	helpPopover.contentSize = vc.preferredContentSize;
 	helpPopover.behavior = NSPopoverBehaviorTransient;;
 	helpPopover.animates = YES;
 	helpPopover.contentViewController = vc;
-
-	NSRect rect = [sender convertRect:[sender bounds] toView:self.view];
-
 	[helpPopover showRelativeToRect:rect ofView:self.view preferredEdge:NSRectEdgeMaxX];
-
-//    // Create view controller
-//    EXPopoverViewController *viewController = [[EXPopoverViewController alloc] init];
-//
-//    // Create popover
-//    NSPopover *entryPopover = [[NSPopover alloc] init];
-//    [entryPopover setContentSize:NSMakeSize(200.0, 200.0)];
-//    [entryPopover setBehavior:NSPopoverBehaviorTransient];
-//    [entryPopover setAnimates:YES];
-//    [entryPopover setContentViewController:viewController];
-//
-//    // Convert point to main window coordinates
-//    NSRect entryRect = [sender convertRect:sender.bounds
-//                                  toView:[[NSApp mainWindow] contentView]];
-//
-//    // Show popover
-//    [entryPopover showRelativeToRect:entryRect
-//                              ofView:[[NSApp mainWindow] contentView]
-//                     preferredEdge:NSMinYEdge];
 }
 
 
@@ -187,66 +199,42 @@
 
 	#define isOn(btn) (btn.state == NSControlStateValueOn)
 
-	if (isOn(_preserveTimeButton))
-		[args addObject:@"-t"];
-	if (isOn(_preservePermissionsButton))
-		[args addObject:@"-p"];
-	if (isOn(_preserveOwnerButton))
-		[args addObject:@"-o"];
-	if (isOn(_preserveGroupButton))
-		[args addObject:@"-g"];
-	if (isOn(_preserveExtAttrsButton))
-		[args addObject:@"-E"];
+	if (isOn(_preserveTimeButton))           [args addObject:@"-t"];
+	if (isOn(_preservePermissionsButton))    [args addObject:@"-p"];
+	if (isOn(_preserveOwnerButton))          [args addObject:@"-o"];
+	if (isOn(_preserveGroupButton))          [args addObject:@"-g"];
+	if (isOn(_preserveExtAttrsButton))       [args addObject:@"-E"];
 
-	if (isOn(_deleteOnDestButton))
-		[args addObject:@"--delete"];
-	if (isOn(_dontLeaveFilesystButton))
-		[args addObject:@"-x"];
-	if (isOn(_verboseButton))
-		[args addObject:@"-v"];
-	if (isOn(_showTransProgressButton))
-		[args addObject:@"--progress"];
-	if (isOn(_ignoreExistingButton))
-		[args addObject:@"--ignore-existing"];
-	if (isOn(_sizeOnlyButton))
-		[args addObject:@"--size-only"];
-	if (isOn(_skipNewerButton))
-		[args addObject:@"--update"];
-	if (isOn(_windowsCompatButton))
-		[args addObject:@"--modify-window=1"];
+	if (isOn(_deleteOnDestButton))           [args addObject:@"--delete"];
+	if (isOn(_dontLeaveFilesystButton))      [args addObject:@"-x"];
+	if (isOn(_verboseButton))                [args addObject:@"-v"];
+	if (isOn(_showTransProgressButton))      [args addObject:@"--progress"];
+	if (isOn(_ignoreExistingButton))         [args addObject:@"--ignore-existing"];
+	if (isOn(_sizeOnlyButton))               [args addObject:@"--size-only"];
+	if (isOn(_skipNewerButton))              [args addObject:@"--update"];
+	if (isOn(_windowsCompatButton))          [args addObject:@"--modify-window=1"];
 
-	if (isOn(_alwaysChecksumButton))
-		[args addObject:@"--checksum"];
-	if (isOn(_compressFileDataButton))
-		[args addObject:@"--compress"];
-	if (isOn(_preserveDevicesButton))
-		[args addObject:@"-D"];
-	if (isOn(_existingFilesButton))
-		[args addObject:@"--existing"];
-	if (isOn(_partialTransFilesButton))
-		[args addObject:@"-P"];
-	if (isOn(_noUIDGIDMapButton))
-		[args addObject:@"--numeric-ids"];
-	if (isOn(_preserveSymlinksButton))
-		[args addObject:@"-l"];
-	if (isOn(_preserveHardLinksButton))
-		[args addObject:@"-H"];
-	if (isOn(_makeBackupsButton))
-		[args addObject:@"--backup"];
-	if (isOn(_showItemizedChangesButton))
-		[args addObject:@"-i"];
+	if (isOn(_alwaysChecksumButton))         [args addObject:@"--checksum"];
+	if (isOn(_compressFileDataButton))       [args addObject:@"--compress"];
+	if (isOn(_preserveDevicesButton))        [args addObject:@"-D"];
+	if (isOn(_existingFilesButton))          [args addObject:@"--existing"];
+	if (isOn(_partialTransFilesButton))      [args addObject:@"-P"];
+	if (isOn(_noUIDGIDMapButton))            [args addObject:@"--numeric-ids"];
+	if (isOn(_preserveSymlinksButton))       [args addObject:@"-l"];
+	if (isOn(_preserveHardLinksButton))      [args addObject:@"-H"];
+	if (isOn(_makeBackupsButton))            [args addObject:@"--backup"];
+	if (isOn(_showItemizedChangesButton))    [args addObject:@"-i"];
 
-	if (isOn(_disableRecursionButton))
-		[args addObject:@"-d"];
-	else [args addObject:@"-r"];
+	if (isOn(_disableRecursionButton))       [args addObject:@"-d"];
+	else                                     [args addObject:@"-r"];
 
-	if (isOn(_protectRemoteArgsButton))
-		[args addObject:@"-s"];
+	if (isOn(_protectRemoteArgsButton))      [args addObject:@"-s"];
 
 	NSArray<NSString *> *additionalArgs =
 	[[_additionalOptsTextView.textStorage.string
 	  componentsSeparatedByString:@" "] filteredArrayUsingPredicate:
-	 [NSPredicate predicateWithBlock:^BOOL(NSString *arg, NSDictionary<NSString *,id> *__unused bindings) {
+	 [NSPredicate predicateWithBlock:^BOOL(NSString *arg,
+	  NSDictionary<NSString *,id> *__unused bindings) {
 		return arg.length > 0;
 	}]];
 
@@ -278,12 +266,8 @@
 		if (focusElement)
 			[focusElement becomeFirstResponder];
 
-		NSError *error = [NSError errorWithDomain:@"AppDomain" code:3028 userInfo:@{
-			NSLocalizedFailureReasonErrorKey: err,
-		}];
+		[self showAlertWithTitle:err message:nil];
 
-		NSAlert *alert = [NSAlert alertWithError:error];
-		[alert beginSheetModalForWindow:self.view.window completionHandler:nil];
 		return;
 	}
 
@@ -377,14 +361,9 @@
 	self.view = [NSView new];
 }
 
-- (void)viewDidLoad
-{
-	[super viewDidLoad];
-}
-
 - (NSSize)preferredContentSize
 {
-	return CGSizeMake(296, 214);
+	return CGSizeMake(296, 202);
 }
 
 @end
