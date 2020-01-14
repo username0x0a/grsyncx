@@ -162,22 +162,35 @@
 	SourceHelpPopupViewController *vc = [[SourceHelpPopupViewController alloc] init];
 
 	CGSize size = vc.view.bounds.size;
-	CGFloat inset = 12;
-	CGRect frame = CGRectMake(inset, inset, size.width-2*inset, size.height-2*inset);
 
-	NSTextField *desc = [[NSTextField alloc] initWithFrame:frame];
-	desc.editable = NO;
-	desc.selectable = NO;
-	desc.backgroundColor = [NSColor clearColor];
-	desc.bezeled = NO; desc.bordered = NO;
-	desc.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-	desc.stringValue = NSLocalizedString(@"This settings allows to wrap contents of "
-		"the Source directory within a folder in the Destination path named same as "
-		"the Source directory.\n\nIf you have a couple of `example.*` files in your "
-		"Source path, wrapping them will put them to a `Destination/Source/example.*` "
-		"path.\n\nWithout wrapping, these files will be included directly at the "
-		"`Destination/example.*` path.", @"Source wrap popup help description");
-	[vc.view addSubview:desc];
+//	CGFloat inset = 12;
+//	CGRect frame = CGRectMake(inset, inset, size.width-2*inset, size.height-2*inset);
+//
+//	NSTextField *desc = [[NSTextField alloc] initWithFrame:frame];
+//	desc.editable = NO;
+//	desc.selectable = NO;
+//	desc.backgroundColor = [NSColor clearColor];
+//	desc.bezeled = NO; desc.bordered = NO;
+//	desc.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+//	desc.stringValue = NSLocalizedString(@"This settings allows to wrap contents of "
+//		"the Source directory within a folder in the Destination path named same as "
+//		"the Source directory.\n\nIf you have a couple of `example.*` files in your "
+//		"Source path, wrapping them will put them to a `Destination/Source/example.*` "
+//		"path.\n\nWithout wrapping, these files will be included directly at the "
+//		"`Destination/example.*` path.", @"Source wrap popup help description");
+//	[vc.view addSubview:desc];
+
+
+	NSImage *image = [NSImage imageNamed:@"source_wrap_hint"];
+
+	NSImageView *imageView = [NSImageView imageViewWithImage:image];
+	imageView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+
+	CGRect imgFrame = imageView.frame;
+	imgFrame.origin.x = round((size.width - imgFrame.size.width)/2);
+	imgFrame.origin.y = round((size.height - imgFrame.size.height)/2);
+	imageView.frame = imgFrame;
+	[vc.view addSubview:imageView];
 
 	NSRect rect = [sender convertRect:[sender bounds] toView:self.view];
 
@@ -363,7 +376,7 @@
 
 - (NSSize)preferredContentSize
 {
-	return CGSizeMake(296, 202);
+	return CGSizeMake(512, 192);
 }
 
 @end
