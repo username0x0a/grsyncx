@@ -89,7 +89,6 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	[self resignFirstResponder];
 	// Do any additional setup after loading the view.
 
 	// rsync --stats
@@ -97,10 +96,7 @@
 	// http://www.staroceans.org/e-book/understanding-the-output-of-rsync-itemize-changes.html
 
 	_sourcePathCtrl.URL = [NSURL fileURLWithPath:NSHomeDirectory()];
-	if (@available(macOS 10.15, *)) {
-		_additionalOptsTextView.font =
-			[NSFont monospacedSystemFontOfSize:13 weight:NSFontWeightRegular];
-	}
+	_additionalOptsTextView.font = [NSFont userFixedPitchFontOfSize:13];
 
 	_sourcePathCtrl.layer.cornerRadius = 4;
 	_destinationPathCtrl.layer.cornerRadius = 4;
@@ -381,9 +377,7 @@
 	[self collectCurrentOptionsWithCompletion:
 	  ^(__unused SyncingOptions * opts, NSString *error) {
 
-		if (error)
-			[self showAlertWithTitle:error message:nil];
-
+		if (error) [self showAlertWithTitle:error message:nil];
 		else [self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
 
 	}];
@@ -421,8 +415,6 @@
 
 
 @end
-
-
 
 
 @implementation SourceHelpPopupViewController

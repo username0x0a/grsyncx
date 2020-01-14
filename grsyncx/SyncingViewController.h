@@ -23,9 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) SyncingOptions *syncingOptions;
 
-+ (instancetype)new  UNAVAILABLE_ATTRIBUTE;
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
-
 @end
 
 NS_ASSUME_NONNULL_END

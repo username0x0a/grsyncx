@@ -8,15 +8,23 @@
 
 #import "SyncingViewController.h"
 
+
 @implementation SyncingOptions
 
 @end
 
+
 @interface SyncingViewController ()
 
+@property (nonatomic, weak) IBOutlet NSProgressIndicator *globProgressIndicator;
 @property (nonatomic, weak) IBOutlet NSTextView *outputTextView;
 
+@property (nonatomic, strong) NSTask *task;
+@property (nonatomic, strong) NSPipe *pipe;
+@property (nonatomic, strong) id observer;
+
 @end
+
 
 @implementation SyncingViewController
 
@@ -29,10 +37,7 @@
 {
 	[super viewDidLoad];
 
-	if (@available(macOS 10.15, *)) {
-		_outputTextView.font =
-			[NSFont monospacedSystemFontOfSize:11 weight:NSFontWeightRegular];
-	}
+	_outputTextView.font = [NSFont userFixedPitchFontOfSize:11];
 }
 
 - (void)viewWillAppear
@@ -42,6 +47,10 @@
 	NSWindow *window = self.view.window;
 	window.title = NSLocalizedString(@"Synchronisation", @"Window title");
 	window.minSize = self.view.bounds.size;
+
+	_outputTextView.textContainer.widthTracksTextView = NO;
+	_outputTextView.textContainer.containerSize =
+		NSSizeFromCGSize(CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX));
 }
 
 - (void)viewDidAppear
@@ -49,10 +58,8 @@
 	[self executeRsync];
 }
 
-
 - (void)executeRsync
 {
-
 	SyncingOptions *options = _syncingOptions;
 
 	NSAssert(options != nil, @"Options missing");
@@ -70,7 +77,12 @@
 	task.standardError = pipe;
 
 /// Asynchronous
+	static NSUInteger totalFiles = 0;
 	static id observer = nil;
+	static NSUInteger blockCounter = 0;
+	static BOOL checkingToCheck = NO;
+	blockCounter = 0;
+
 	NSFileHandle *handle = pipe.fileHandleForReading;
 	NSTextView *outputTextView = _outputTextView;
 
@@ -82,17 +94,48 @@
 
 		NSData *data = [handle availableData];
 
-		if (data.length == 0)
+		if (data.length == 0 || !observer)
 			return;
 
-		NSString *line = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		NSString *line = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] ?: @"";
+		NSString *cons = @" files to consider";
+		NSString *toCheck = @" to-check=";
+
+		if ([line containsString:cons])
+		{
+			NSArray<NSString *> *lines = [line componentsSeparatedByString:@"\n"];
+			for (NSString *ln in lines)
+				if ([ln containsString:cons])
+					totalFiles = (NSUInteger)[ln doubleValue];
+		}
+
+		if (totalFiles > 0)
+		{
+			if ([line containsString:toCheck]) {
+				checkingToCheck = YES;
+				NSUInteger remaining = (NSUInteger)[line
+					componentsSeparatedByString:toCheck].lastObject.integerValue;
+				blockCounter = totalFiles-remaining;
+			}
+			else if (!checkingToCheck)
+				blockCounter += [line componentsSeparatedByString:@"\n"].count;
+
+			double progress = MIN(MAX((double)blockCounter / (double)totalFiles, 0), 0.99);
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[self updateGlobalProgress:progress];
+			});
+		}
 
 		NSTextView *tv = outputTextView;
 		BOOL smartScroll = tv.visibleRect.origin.y + tv.visibleRect.size.height >= tv.bounds.size.height;
 
-		NSString *log = tv.string;
-		log = [log stringByAppendingFormat:@"%@line\n", line];
-		tv.string = log;
+		NSAttributedString *str = [[NSAttributedString alloc] initWithString:line attributes:@{
+			NSFontAttributeName: tv.font,
+			NSForegroundColorAttributeName: tv.textColor,
+		}];
+
+		[tv.textStorage appendAttributedString:str];
 
 		if (smartScroll)
 			[tv scrollToEndOfDocument:self];
@@ -103,11 +146,17 @@
 	}];
 
 	task.terminationHandler = ^(NSTask *__unused endedTask) {
-		[self updateGlobalProgress:1];
 		[[NSNotificationCenter defaultCenter] removeObserver:observer];
 		observer = nil;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self updateGlobalProgress:1];
+		});
 	};
 ////
+
+	_observer = observer;
+	_task = task;
+	_pipe = pipe;
 
 	[self updateGlobalProgress:0];
 	[task launch];
@@ -122,22 +171,16 @@
 //	NSString *stringRead = [[NSString alloc] initWithData:dataRead encoding:NSUTF8StringEncoding];
 //	NSLog(@"output: %@", stringRead);
 ////
-
-
-
-
-
-
 }
 
 - (void)updateGlobalProgress:(double)progress
 {
+	progress = MIN(MAX(progress, 0), 1);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		self->_globProgressIndicator.doubleValue = progress * 100;
+	});
 	NSLog(@"Global progress: %lf", progress * 100);
 }
-
-
-
-
 
 - (IBAction)closeButtonAction:(__unused id)sender
 {
