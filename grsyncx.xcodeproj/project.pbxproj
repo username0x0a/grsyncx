@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D630126323CDBDA700D07057 /* SyncingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D630126223CDBDA700D07057 /* SyncingViewController.m */; };
 		D67B6A2023CC777500891072 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D67B6A1F23CC777500891072 /* WindowController.m */; };
 		EF8658C723CB84C50041726A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658C623CB84C50041726A /* AppDelegate.m */; };
 		EF8658CA23CB84C50041726A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658C923CB84C50041726A /* MainViewController.m */; };
@@ -16,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D630126123CDBDA700D07057 /* SyncingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncingViewController.h; sourceTree = "<group>"; };
+		D630126223CDBDA700D07057 /* SyncingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyncingViewController.m; sourceTree = "<group>"; };
 		D67B6A1E23CC777500891072 /* WindowController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowController.h; sourceTree = "<group>"; };
 		D67B6A1F23CC777500891072 /* WindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		D67B6A2123CC78E600891072 /* WindowActionsResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowActionsResponder.h; sourceTree = "<group>"; };
@@ -66,6 +69,8 @@
 				EF8658C623CB84C50041726A /* AppDelegate.m */,
 				EF8658C823CB84C50041726A /* MainViewController.h */,
 				EF8658C923CB84C50041726A /* MainViewController.m */,
+				D630126123CDBDA700D07057 /* SyncingViewController.h */,
+				D630126223CDBDA700D07057 /* SyncingViewController.m */,
 				D67B6A2123CC78E600891072 /* WindowActionsResponder.h */,
 				D67B6A1E23CC777500891072 /* WindowController.h */,
 				D67B6A1F23CC777500891072 /* WindowController.m */,
@@ -151,6 +156,7 @@
 			files = (
 				EF8658CA23CB84C50041726A /* MainViewController.m in Sources */,
 				D67B6A2023CC777500891072 /* WindowController.m in Sources */,
+				D630126323CDBDA700D07057 /* SyncingViewController.m in Sources */,
 				EF8658D223CB84C80041726A /* main.m in Sources */,
 				EF8658C723CB84C50041726A /* AppDelegate.m in Sources */,
 			);

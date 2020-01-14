@@ -1,8 +1,8 @@
 //
-//  MainViewController.h
+//  SyncingViewController.h
 //  grsyncx
 //
-//  Created by Michal Zelinka on 12/01/2020.
+//  Created by Michal Zelinka on 14/01/2020.
 //  Copyright © 2020 Michal Zelinka. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MainViewController : NSViewController
+@interface SyncingViewController : NSViewController
 
 @end
 

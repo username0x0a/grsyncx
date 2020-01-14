@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import "SyncingViewController.h"
 #import "WindowActionsResponder.h"
 
 @interface SourceHelpPopupViewController : NSViewController
@@ -259,6 +260,15 @@
 
 - (void)runRsyncSimulated:(BOOL)simulated
 {
+
+
+	[self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
+
+
+
+	return;
+
+
 	NSURL *srcURL = _sourcePathCtrl.pathItems.lastObject.URL;
 	NSURL *dstURL = _destinationPathCtrl.pathItems.lastObject.URL;
 
