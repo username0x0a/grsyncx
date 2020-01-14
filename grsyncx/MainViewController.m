@@ -11,6 +11,7 @@
 #import "WindowActionsResponder.h"
 
 @interface SourceHelpPopupViewController : NSViewController
+
 @end
 
 @interface MainViewController () <WindowActionsResponder>
@@ -80,6 +81,8 @@
 
 @property (nonatomic, weak) IBOutlet NSTextView *additionalOptsTextView;
 
+@property (atomic) BOOL runSimulated;
+
 @end
 
 @implementation MainViewController
@@ -95,7 +98,7 @@
 
 	_sourcePathCtrl.URL = [NSURL fileURLWithPath:NSHomeDirectory()];
 	if (@available(macOS 10.15, *)) {
-		_additionalOptsTextView.textContainer.textView.font =
+		_additionalOptsTextView.font =
 			[NSFont monospacedSystemFontOfSize:13 weight:NSFontWeightRegular];
 	}
 
@@ -258,45 +261,34 @@
 	return [args copy];
 }
 
-- (void)runRsyncSimulated:(BOOL)simulated
+- (void)collectCurrentOptionsWithCompletion:(void (NS_NOESCAPE ^)(SyncingOptions *, NSString *))completion
 {
-
-
-	[self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
-
-
-
-	return;
-
+	if (!completion) return;
 
 	NSURL *srcURL = _sourcePathCtrl.pathItems.lastObject.URL;
 	NSURL *dstURL = _destinationPathCtrl.pathItems.lastObject.URL;
 
 	NSString *err = nil;
-	NSView *focusElement = nil;
 
-	if (!srcURL) {
+	if (!srcURL)
 		err = NSLocalizedString(@"Source path isn't set", @"View label");
-		focusElement = _sourcePathCtrl;
-	}
-	else if (!dstURL) {
+	else if (!dstURL)
 		err = NSLocalizedString(@"Destination path isn't set", @"View label");
-		focusElement = _destinationPathCtrl;
-	}
 
-	if (err) {
-
-		if (focusElement)
-			[focusElement becomeFirstResponder];
-
-		[self showAlertWithTitle:err message:nil];
-
+	if (err)
+	{
+		completion(nil, err);
 		return;
 	}
 
+
+
+
+
+
 	NSMutableArray<NSString *> *args = [[self collectArguments] mutableCopy];
 
-	if (simulated)
+	if (_runSimulated)
 		[args addObject:@"-n"];
 
 	NSString *srcPath = srcURL.path;
@@ -305,8 +297,15 @@
 	if (_wrapInSourceFolderButton.state == NSControlStateValueOff)
 		srcPath = [srcPath stringByAppendingString:@"/"];
 
-	[args addObject:srcPath];
-	[args addObject:dstPath];
+	SyncingOptions *options = [SyncingOptions new];
+	options.sourcePath = srcPath;
+	options.destinationPath = dstPath;
+	options.arguments = args;
+
+	completion(options, nil);
+
+
+/*
 
 	NSTask *task = [NSTask new];
 	task.launchPath = @"/usr/bin/rsync";
@@ -355,6 +354,55 @@
 //	NSString *stringRead = [[NSString alloc] initWithData:dataRead encoding:NSUTF8StringEncoding];
 //	NSLog(@"output: %@", stringRead);
 ////
+
+*/
+}
+
+- (void)prepareForSegue:(__unused NSStoryboardSegue *)segue sender:(__unused id)sender
+{
+	if ([segue.identifier isEqualToString:@"SyncingSegue"])
+	{
+		SyncingViewController *vc = segue.destinationController;
+
+		if (![vc isKindOfClass:[SyncingViewController class]])
+			return;
+
+		[self collectCurrentOptionsWithCompletion:
+		 ^(SyncingOptions *options, __unused NSString *err) {
+			vc.syncingOptions = options;
+		}];
+	}
+}
+
+- (void)runRsyncSimulated:(BOOL)simulated
+{
+	_runSimulated = simulated;
+
+	[self collectCurrentOptionsWithCompletion:
+	  ^(__unused SyncingOptions * opts, NSString *error) {
+
+		if (error)
+			[self showAlertWithTitle:error message:nil];
+
+		else [self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
+
+	}];
+}
+
+
+#pragma mark - Syncing options handler
+
+
+- (SyncingOptions *)syncingOptions
+{
+	__block SyncingOptions *options = nil;
+
+	[self collectCurrentOptionsWithCompletion:
+	 ^(SyncingOptions *collected, __unused NSString *err) {
+		options = collected;
+	}];
+
+	return options;
 }
 
 
