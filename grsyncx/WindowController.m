@@ -7,6 +7,8 @@
 //
 
 #import "WindowController.h"
+#import "WindowActionsResponder.h"
+
 
 @interface WindowController () <NSToolbarDelegate>
 
@@ -14,14 +16,18 @@
 
 @end
 
+
 @implementation WindowController
 
-- (void)windowDidLoad {
-    [super windowDidLoad];
-    
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
+- (void)windowDidLoad
+{
+	[super windowDidLoad];
 
-	_actionsResponder = (id)self.contentViewController;
+	NSViewController *vc = self.contentViewController;
+
+	if ([vc conformsToProtocol:@protocol(WindowActionsResponder)])
+		_actionsResponder = (id)self.contentViewController;
+	else @throw @"Invalid Window actions responder";
 }
 
 - (IBAction)simulateButton:(__unused id)sender

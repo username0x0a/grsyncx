@@ -692,33 +692,19 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="484" height="425"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
-                        <toolbar key="toolbar" implicitIdentifier="5BA9313E-13C1-47B0-BAF1-2C488FC76B10" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="gE5-RH-tOH">
+                        <toolbar key="toolbar" implicitIdentifier="5BA9313E-13C1-47B0-BAF1-2C488FC76B10" centeredItem="BCi-IG-hKb" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="gE5-RH-tOH">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="732AF8FD-B6DA-4A44-9903-52648ACD456C" label="Custom Title" paletteLabel="Custom Title" sizingBehavior="auto" id="BCi-IG-hKb">
                                     <nil key="toolTip"/>
                                     <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="BAO-AL-9bP">
                                         <rect key="frame" x="0.0" y="14" width="84" height="25"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="grsyncx" id="7ja-W6-Xav">
+                                        <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="center" title="grsyncx" usesSingleLineMode="YES" id="7ja-W6-Xav">
                                             <font key="font" metaFont="system" size="18"/>
                                             <color key="textColor" name="custom_title_color"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="0BE0049D-8F6E-4B1A-9DC0-0C986941D646" label="Add/Delete" paletteLabel="Add/Delete" sizingBehavior="auto" id="wly-pY-eTW">
-                                    <nil key="toolTip"/>
-                                    <segmentedControl key="view" verticalHuggingPriority="750" id="FDo-9g-6IQ">
-                                        <rect key="frame" x="0.0" y="14" width="71" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="separated" trackingMode="momentary" id="9tQ-vz-Bfc">
-                                            <font key="font" metaFont="system"/>
-                                            <segments>
-                                                <segment image="NSAddTemplate" width="32"/>
-                                                <segment image="NSRemoveTemplate" width="32" enabled="NO" tag="1"/>
-                                            </segments>
-                                        </segmentedCell>
-                                    </segmentedControl>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="5344F61D-1699-49A4-AF15-CC597B369A5C" label="Session" paletteLabel="Session" id="0ug-7w-MyJ">
                                     <nil key="toolTip"/>
@@ -729,7 +715,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <popUpButtonCell key="cell" type="roundTextured" title="default" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="JQv-j2-Ode" id="7mS-5L-pPt">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="menu"/>
+                                            <font key="font" metaFont="system"/>
                                             <menu key="menu" id="Btf-rn-5Oj">
                                                 <items>
                                                     <menuItem title="default" state="on" id="JQv-j2-Ode"/>
@@ -762,8 +748,6 @@
                                         </buttonCell>
                                     </button>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="ibi-Rd-XsC"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="5Ol-GX-AXm"/>
                                 <toolbarItem implicitItemIdentifier="3E4071C5-FF76-484A-BE7F-AA7D34814593" label="Simulate" paletteLabel="Simulate" toolTip="Simulate" image="icon-chess" id="7os-PB-Kf5">
                                     <size key="minSize" width="38" height="25"/>
                                     <size key="maxSize" width="38" height="25"/>
@@ -794,11 +778,24 @@
                                         <action selector="executeButton:" target="B8D-0N-5wS" id="quc-oq-9mY"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="0BE0049D-8F6E-4B1A-9DC0-0C986941D646" label="Add/Delete" paletteLabel="Add/Delete" sizingBehavior="auto" id="wly-pY-eTW">
+                                    <nil key="toolTip"/>
+                                    <segmentedControl key="view" verticalHuggingPriority="750" id="FDo-9g-6IQ">
+                                        <rect key="frame" x="0.0" y="14" width="71" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="separated" trackingMode="momentary" id="9tQ-vz-Bfc">
+                                            <font key="font" metaFont="system"/>
+                                            <segments>
+                                                <segment image="NSAddTemplate" width="32"/>
+                                                <segment image="NSRemoveTemplate" width="32" enabled="NO" tag="1"/>
+                                            </segments>
+                                        </segmentedCell>
+                                    </segmentedControl>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="5Ol-GX-AXm"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="ibi-Rd-XsC"/>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="ibi-Rd-XsC"/>
-                                <toolbarItem reference="ibi-Rd-XsC"/>
-                                <toolbarItem reference="5Ol-GX-AXm"/>
                                 <toolbarItem reference="BCi-IG-hKb"/>
                                 <toolbarItem reference="5Ol-GX-AXm"/>
                                 <toolbarItem reference="7os-PB-Kf5"/>
@@ -1364,7 +1361,7 @@
                 </viewController>
                 <customObject id="fOd-SN-yX7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="763" y="799.5"/>
+            <point key="canvasLocation" x="811" y="808"/>
         </scene>
     </scenes>
     <resources>

@@ -11,10 +11,10 @@
 
 @protocol WindowActionsResponder <NSObject>
 
+@required
 - (void)didReceiveSimulateAction;
 - (void)didReceiveExecuteAction;
 
 @end
-
 
 #endif /* WindowActionsResponder_h */

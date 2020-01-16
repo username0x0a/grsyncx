@@ -14,19 +14,24 @@
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *__unused)aNotification {
+- (void)applicationDidFinishLaunching:(NSNotification *__unused)aNotification
+{
 	// Insert code here to initialize your application
 }
 
-
-- (void)applicationWillTerminate:(NSNotification *__unused)aNotification {
+- (void)applicationWillTerminate:(NSNotification *__unused)aNotification
+{
 	// Insert code here to tear down your application
 }
+
+//- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
+//{
+//
+//}
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *__unused)sender
 {
 	return YES; // For now
 }
-
 
 @end

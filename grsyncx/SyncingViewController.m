@@ -28,11 +28,6 @@
 
 @implementation SyncingViewController
 
-- (void)setSyncingOptions:(SyncingOptions *)syncingOptions
-{
-	_syncingOptions = syncingOptions;
-}
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
@@ -58,6 +53,28 @@
 	[self executeRsync];
 }
 
+
+#pragma mark - Actions
+
+
+- (void)updateGlobalProgress:(double)progress
+{
+	progress = MIN(MAX(progress, 0), 1);
+	dispatch_async(dispatch_get_main_queue(), ^{
+		self->_globProgressIndicator.doubleValue = progress * 100;
+	});
+	NSLog(@"Global progress: %lf", progress * 100);
+}
+
+- (IBAction)closeButtonAction:(__unused id)sender
+{
+	[self dismissViewController:self];
+}
+
+
+#pragma mark - Command line stuff
+
+
 - (void)executeRsync
 {
 	SyncingOptions *options = _syncingOptions;
@@ -77,6 +94,7 @@
 	task.standardError = pipe;
 
 /// Asynchronous
+
 	static NSUInteger totalFiles = 0;
 	static id observer = nil;
 	static NSUInteger blockCounter = 0;
@@ -152,7 +170,8 @@
 			[self updateGlobalProgress:1];
 		});
 	};
-////
+
+/// Asynchronous end
 
 	_observer = observer;
 	_task = task;
@@ -161,7 +180,7 @@
 	[self updateGlobalProgress:0];
 	[task launch];
 
-//// Synchronous
+/// Synchronous
 //
 //	[task waitUntilExit];
 //	NSLog(@"Finished");
@@ -170,21 +189,8 @@
 //	NSData *dataRead = [read readDataToEndOfFile];
 //	NSString *stringRead = [[NSString alloc] initWithData:dataRead encoding:NSUTF8StringEncoding];
 //	NSLog(@"output: %@", stringRead);
-////
-}
-
-- (void)updateGlobalProgress:(double)progress
-{
-	progress = MIN(MAX(progress, 0), 1);
-	dispatch_async(dispatch_get_main_queue(), ^{
-		self->_globProgressIndicator.doubleValue = progress * 100;
-	});
-	NSLog(@"Global progress: %lf", progress * 100);
-}
-
-- (IBAction)closeButtonAction:(__unused id)sender
-{
-	[self dismissViewController:self];
+//
+/// Synchronous end
 }
 
 @end

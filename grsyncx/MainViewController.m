@@ -161,37 +161,6 @@
 {
 	SourceHelpPopupViewController *vc = [[SourceHelpPopupViewController alloc] init];
 
-	CGSize size = vc.view.bounds.size;
-
-//	CGFloat inset = 12;
-//	CGRect frame = CGRectMake(inset, inset, size.width-2*inset, size.height-2*inset);
-//
-//	NSTextField *desc = [[NSTextField alloc] initWithFrame:frame];
-//	desc.editable = NO;
-//	desc.selectable = NO;
-//	desc.backgroundColor = [NSColor clearColor];
-//	desc.bezeled = NO; desc.bordered = NO;
-//	desc.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-//	desc.stringValue = NSLocalizedString(@"This settings allows to wrap contents of "
-//		"the Source directory within a folder in the Destination path named same as "
-//		"the Source directory.\n\nIf you have a couple of `example.*` files in your "
-//		"Source path, wrapping them will put them to a `Destination/Source/example.*` "
-//		"path.\n\nWithout wrapping, these files will be included directly at the "
-//		"`Destination/example.*` path.", @"Source wrap popup help description");
-//	[vc.view addSubview:desc];
-
-
-	NSImage *image = [NSImage imageNamed:@"source_wrap_hint"];
-
-	NSImageView *imageView = [NSImageView imageViewWithImage:image];
-	imageView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-
-	CGRect imgFrame = imageView.frame;
-	imgFrame.origin.x = round((size.width - imgFrame.size.width)/2);
-	imgFrame.origin.y = round((size.height - imgFrame.size.height)/2);
-	imageView.frame = imgFrame;
-	[vc.view addSubview:imageView];
-
 	NSRect rect = [sender convertRect:[sender bounds] toView:self.view];
 
 	NSPopover *helpPopover = [NSPopover new];
@@ -277,11 +246,6 @@
 		return;
 	}
 
-
-
-
-
-
 	NSMutableArray<NSString *> *args = [[self collectArguments] mutableCopy];
 
 	if (_runSimulated)
@@ -299,59 +263,6 @@
 	options.arguments = args;
 
 	completion(options, nil);
-
-
-/*
-
-	NSTask *task = [NSTask new];
-	task.launchPath = @"/usr/bin/rsync";
-	task.arguments = args;
-
-	NSPipe *pipe = [NSPipe new];
-	task.standardOutput = pipe;
-	task.standardError = pipe;
-
-/// Asynchronous
-	static id observer = nil;
-	NSFileHandle *handle = pipe.fileHandleForReading;
-
-	[handle waitForDataInBackgroundAndNotify];
-
-	observer = [[NSNotificationCenter defaultCenter] addObserverForName:
-	  NSFileHandleDataAvailableNotification object:handle
-	  queue:nil usingBlock:^(NSNotification *__unused note) {
-
-		NSData *data = [handle availableData];
-
-		if (data.length == 0)
-			return;
-
-		NSString *line = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		NSLog(@"out: %@", line);
-
-		[handle waitForDataInBackgroundAndNotify];
-	}];
-
-	task.terminationHandler = ^(NSTask *__unused endedTask) {
-		[[NSNotificationCenter defaultCenter] removeObserver:observer];
-		observer = nil;
-	};
-////
-
-	[task launch];
-
-//// Synchronous
-//
-//	[task waitUntilExit];
-//	NSLog(@"Finished");
-//
-//	NSFileHandle *read = [pipe fileHandleForReading];
-//	NSData *dataRead = [read readDataToEndOfFile];
-//	NSString *stringRead = [[NSString alloc] initWithData:dataRead encoding:NSUTF8StringEncoding];
-//	NSLog(@"output: %@", stringRead);
-////
-
-*/
 }
 
 - (void)prepareForSegue:(__unused NSStoryboardSegue *)segue sender:(__unused id)sender
@@ -375,7 +286,7 @@
 	_runSimulated = simulated;
 
 	[self collectCurrentOptionsWithCompletion:
-	  ^(__unused SyncingOptions * opts, NSString *error) {
+	 ^(__unused SyncingOptions * opts, NSString *error) {
 
 		if (error) [self showAlertWithTitle:error message:nil];
 		else [self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
@@ -421,7 +332,38 @@
 
 - (void)loadView
 {
-	self.view = [NSView new];
+//	CGFloat inset = 12;
+//	CGRect frame = CGRectMake(inset, inset, size.width-2*inset, size.height-2*inset);
+//
+//	NSTextField *desc = [[NSTextField alloc] initWithFrame:frame];
+//	desc.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+//	desc.editable = NO;
+//	desc.selectable = NO;
+//	desc.backgroundColor = [NSColor clearColor];
+//	desc.bezeled = NO; desc.bordered = NO;
+//	desc.stringValue = NSLocalizedString(@"This settings allows to wrap contents of "
+//		"the Source directory within a folder in the Destination path named same as "
+//		"the Source directory.\n\nIf you have a couple of `example.*` files in your "
+//		"Source path, wrapping them will put them to a `Destination/Source/example.*` "
+//		"path.\n\nWithout wrapping, these files will be included directly at the "
+//		"`Destination/example.*` path.", @"Source wrap popup help description");
+//	[view addSubview:desc];
+
+	NSImage *image = [NSImage imageNamed:@"source_wrap_hint"];
+
+	CGSize size = self.preferredContentSize;
+	NSView *view = self.view = [[NSView alloc] initWithFrame:
+		NSRectFromCGRect(CGRectMake(0, 0, size.width, size.height))];
+
+	NSImageView *imageView = [NSImageView imageViewWithImage:image];
+	imageView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+
+	CGRect imgFrame = imageView.frame;
+	imgFrame.size = size;
+	imgFrame.origin.x = round((size.width - imgFrame.size.width)/2);
+	imgFrame.origin.y = round((size.height - imgFrame.size.height)/2);
+	imageView.frame = imgFrame;
+	[view addSubview:imageView];
 }
 
 - (NSSize)preferredContentSize

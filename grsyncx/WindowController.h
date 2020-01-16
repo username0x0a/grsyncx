@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "WindowActionsResponder.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
