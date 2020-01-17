@@ -1,6 +1,6 @@
 # grsyncx
 
-Native GUI app for `rsync` inspired by _grsync_. 🔄
+Native GUI app for `rsync` inspired by _grsync_. 🔄 As the original _grsync_ app port compiled for _macOS_ used GTK+ and other 32-bit dependencies, it no longer works in _macOS Catalina_ → thus, a replacement must be made! 💪
 
 ![Screenshot](https://i.imgur.com/WCjPs3h.png)
 
@@ -17,7 +17,7 @@ Native GUI app for `rsync` inspired by _grsync_. 🔄
 
 ## TODO
 
-- Profiles as in the original _grsync_ app
+- Profiles as seen in the original _grsync_ app
 
 ## License
 
