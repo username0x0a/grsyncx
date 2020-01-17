@@ -77,6 +77,10 @@
 
 - (void)executeRsync
 {
+	// rsync --stats
+	// rsync --itemize-changes:
+	// http://www.staroceans.org/e-book/understanding-the-output-of-rsync-itemize-changes.html
+
 	SyncingOptions *options = _syncingOptions;
 
 	NSAssert(options != nil, @"Options missing");

@@ -12,7 +12,7 @@
 
 @interface WindowController () <NSToolbarDelegate>
 
-@property (nonatomic, weak) IBOutlet id<WindowActionsResponder> actionsResponder;
+@property (nonatomic, weak) id<WindowActionsResponder> actionsResponder;
 
 @end
 
@@ -26,18 +26,20 @@
 	NSViewController *vc = self.contentViewController;
 
 	if ([vc conformsToProtocol:@protocol(WindowActionsResponder)])
-		_actionsResponder = (id)self.contentViewController;
+		_actionsResponder = (id)vc;
 	else @throw @"Invalid Window actions responder";
 }
 
 - (IBAction)simulateButton:(__unused id)sender
 {
-	[_actionsResponder didReceiveSimulateAction];
+	const id<WindowActionsResponder> resp = _actionsResponder;
+	[resp didReceiveSimulateAction];
 }
 
 - (IBAction)executeButton:(__unused id)sender
 {
-	[_actionsResponder didReceiveExecuteAction];
+	const id<WindowActionsResponder> resp = _actionsResponder;
+	[resp didReceiveExecuteAction];
 }
 
 @end

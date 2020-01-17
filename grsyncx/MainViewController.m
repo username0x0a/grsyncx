@@ -10,11 +10,21 @@
 #import "SyncingViewController.h"
 #import "WindowActionsResponder.h"
 
+
+#pragma mark - Source help popup controller -
+
+
 @interface SourceHelpPopupViewController : NSViewController
 
 @end
 
+
+#pragma mark - Main view controller -
+
+
 @interface MainViewController () <WindowActionsResponder>
+
+#pragma mark Basic properties
 
 @property (nonatomic, weak) IBOutlet NSPathControl *sourcePathCtrl;
 @property (nonatomic, weak) IBOutlet NSPathControl *destinationPathCtrl;
@@ -51,8 +61,11 @@
 @property (nonatomic, weak) IBOutlet NSButton *sizeOnlyButton;
 // -u, --update | Skip files that are newer in the destination
 @property (nonatomic, weak) IBOutlet NSButton *skipNewerButton;
-// --modify-window=1 | Compare modification times with reduced accuracy, workaround for a FAT FS limitation
+// --modify-window=1 | Compare modification times with reduced accuracy,
+//                     workaround for a FAT FS limitation
 @property (nonatomic, weak) IBOutlet NSButton *windowsCompatButton;
+
+#pragma mark Advanced properties
 
 // -c, --checksum | Skip based on checksum, not time and size
 @property (nonatomic, weak) IBOutlet NSButton *alwaysChecksumButton;
@@ -70,30 +83,35 @@
 @property (nonatomic, weak) IBOutlet NSButton *preserveSymlinksButton;
 // -H, --hard-links | Hard-links are copied as such, do not copy link target file
 @property (nonatomic, weak) IBOutlet NSButton *preserveHardLinksButton;
-// -b, --backup | Make backups of existing files in the destination, see --suffix & --backup-dir
+// -b, --backup | Make backups of existing files in the destination,
+//                see --suffix & --backup-dir
 @property (nonatomic, weak) IBOutlet NSButton *makeBackupsButton;
 // -i, --itemize-changes | Show additional information on every changed file
 @property (nonatomic, weak) IBOutlet NSButton *showItemizedChangesButton;
 // -d (vs -r) | If checked, source subdirectories will be ignored
 @property (nonatomic, weak) IBOutlet NSButton *disableRecursionButton;
-// -s | Protect remote args from shell expansion, avoids the need to manually escape filename args like --exclude
+// -s | Protect remote args from shell expansion, avoids the need to
+//      manually escape filename args like --exclude
 @property (nonatomic, weak) IBOutlet NSButton *protectRemoteArgsButton;
 
 @property (nonatomic, weak) IBOutlet NSTextView *additionalOptsTextView;
+
+#pragma mark Execution type
 
 @property (atomic) BOOL runSimulated;
 
 @end
 
+
+#pragma mark - Implementation
+
+
 @implementation MainViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
 	// Do any additional setup after loading the view.
-
-	// rsync --stats
-	// rsync --itemize-changes:
-	// http://www.staroceans.org/e-book/understanding-the-output-of-rsync-itemize-changes.html
 
 	_sourcePathCtrl.URL = [NSURL fileURLWithPath:NSHomeDirectory()];
 	_additionalOptsTextView.font = [NSFont userFixedPitchFontOfSize:13];
@@ -240,8 +258,18 @@
 	else if (!dstURL)
 		err = NSLocalizedString(@"Destination path isn't set", @"View label");
 
-	if (err)
-	{
+	NSString *srcPath = srcURL.path;
+	NSString *dstPath = dstURL.path;
+	BOOL isDirectory = NO;
+
+	NSFileManager *fm = [NSFileManager defaultManager];
+
+	if (![fm fileExistsAtPath:srcPath])
+		err = NSLocalizedString(@"Source path is invalid", @"View label");
+	else if (![fm fileExistsAtPath:dstPath isDirectory:&isDirectory] || !isDirectory)
+		err = NSLocalizedString(@"Destination path is invalid", @"View label");
+
+	if (err) {
 		completion(nil, err);
 		return;
 	}
@@ -250,9 +278,6 @@
 
 	if (_runSimulated)
 		[args addObject:@"-n"];
-
-	NSString *srcPath = srcURL.path;
-	NSString *dstPath = dstURL.path;
 
 	if (_wrapInSourceFolderButton.state == NSControlStateValueOff)
 		srcPath = [srcPath stringByAppendingString:@"/"];
@@ -272,7 +297,7 @@
 		SyncingViewController *vc = segue.destinationController;
 
 		if (![vc isKindOfClass:[SyncingViewController class]])
-			return;
+			@throw @"Unexpected view controller";
 
 		[self collectCurrentOptionsWithCompletion:
 		 ^(SyncingOptions *options, __unused NSString *err) {
@@ -286,7 +311,7 @@
 	_runSimulated = simulated;
 
 	[self collectCurrentOptionsWithCompletion:
-	 ^(__unused SyncingOptions * opts, NSString *error) {
+	 ^(__unused SyncingOptions *opts, NSString *error) {
 
 		if (error) [self showAlertWithTitle:error message:nil];
 		else [self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
@@ -326,6 +351,9 @@
 
 
 @end
+
+
+#pragma mark - Source help popup controller -
 
 
 @implementation SourceHelpPopupViewController
