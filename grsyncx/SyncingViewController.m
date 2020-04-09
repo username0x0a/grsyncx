@@ -19,6 +19,9 @@
 @property (nonatomic, weak) IBOutlet NSProgressIndicator *globProgressIndicator;
 @property (nonatomic, weak) IBOutlet NSTextView *outputTextView;
 
+@property (nonatomic, weak) IBOutlet NSButton *stopButton;
+@property (nonatomic, weak) IBOutlet NSButton *closeButton;
+
 @property (nonatomic, strong) NSTask *task;
 @property (nonatomic, strong) NSPipe *pipe;
 @property (nonatomic, strong) id observer;
@@ -62,11 +65,20 @@
 	progress = MIN(MAX(progress, 0), 1);
 	dispatch_async(dispatch_get_main_queue(), ^{
 		self->_globProgressIndicator.doubleValue = progress * 100;
+		if (progress >= 1) {
+			self->_stopButton.enabled = NO;
+			self->_closeButton.enabled = YES;
+		}
 	});
 	NSLog(@"Global progress: %lf", progress * 100);
 }
 
-- (IBAction)closeButtonAction:(__unused id)sender
+- (IBAction)stopButtonAction:(id)sender
+{
+	[self terminateRsync];
+}
+
+- (IBAction)closeButtonAction:(id)sender
 {
 	[self dismissViewController:self];
 }
@@ -167,11 +179,14 @@
 		[handle waitForDataInBackgroundAndNotify];
 	}];
 
+	__weak typeof(self) ws = self;
+
 	task.terminationHandler = ^(NSTask *__unused endedTask) {
 		[[NSNotificationCenter defaultCenter] removeObserver:observer];
 		observer = nil;
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[self updateGlobalProgress:1];
+			typeof(self) ss = ws;
+			[ss updateGlobalProgress:1]; // TODO: Stopped vs Finished state
 		});
 	};
 
@@ -195,6 +210,11 @@
 //	NSLog(@"output: %@", stringRead);
 //
 /// Synchronous end
+}
+
+- (void)terminateRsync
+{
+	[_task terminate];
 }
 
 @end
