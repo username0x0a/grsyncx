@@ -514,6 +514,17 @@
                                                         <action selector="pickFolder:" target="XfG-lQ-9wD" id="MoM-Lr-C8v"/>
                                                     </connections>
                                                 </button>
+                                                <button hidden="YES" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7iF-UT-ZNi">
+                                                    <rect key="frame" x="386" y="329" width="24" height="32"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSInfo" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="slx-jE-72b">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="displayPermissionsHelp:" target="XfG-lQ-9wD" id="ihM-7B-WGh"/>
+                                                    </connections>
+                                                </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bpa-YF-bVq">
                                                     <rect key="frame" x="127" y="305" width="161" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -521,6 +532,17 @@
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
+                                                </button>
+                                                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AkS-4O-VPZ">
+                                                    <rect key="frame" x="286" y="300" width="25" height="25"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bb9-FJ-Sv9">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="displaySourceHelp:" target="XfG-lQ-9wD" id="HZ5-q4-9lP"/>
+                                                    </connections>
                                                 </button>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xzf-bk-D2x">
                                                     <rect key="frame" x="15" y="271" width="98" height="16"/>
@@ -541,6 +563,19 @@
                                                     <color key="borderColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="fillColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                                                 </box>
+                                                <pathControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rhk-OL-h7g">
+                                                    <rect key="frame" x="122" y="267" width="173" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <pathCell key="cell" selectable="YES" editable="YES" alignment="left" id="gZe-Dy-bDp">
+                                                        <font key="font" metaFont="system"/>
+                                                        <allowedTypes>
+                                                            <string>public.folder</string>
+                                                        </allowedTypes>
+                                                    </pathCell>
+                                                    <connections>
+                                                        <action trigger="doubleAction" selector="pickFolder:" target="XfG-lQ-9wD" id="Gk2-GY-lLg"/>
+                                                    </connections>
+                                                </pathControl>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pox-9h-nee">
                                                     <rect key="frame" x="297" y="261" width="85" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -677,30 +712,6 @@
                                                         <font key="font" metaFont="system"/>
                                                     </buttonCell>
                                                 </button>
-                                                <pathControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rhk-OL-h7g">
-                                                    <rect key="frame" x="122" y="267" width="173" height="22"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <pathCell key="cell" selectable="YES" editable="YES" alignment="left" id="gZe-Dy-bDp">
-                                                        <font key="font" metaFont="system"/>
-                                                        <allowedTypes>
-                                                            <string>public.folder</string>
-                                                        </allowedTypes>
-                                                    </pathCell>
-                                                    <connections>
-                                                        <action trigger="doubleAction" selector="pickFolder:" target="XfG-lQ-9wD" id="Gk2-GY-lLg"/>
-                                                    </connections>
-                                                </pathControl>
-                                                <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AkS-4O-VPZ">
-                                                    <rect key="frame" x="286" y="300" width="25" height="25"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bb9-FJ-Sv9">
-                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <action selector="displayHelp:" target="XfG-lQ-9wD" id="HZ5-q4-9lP"/>
-                                                    </connections>
-                                                </button>
                                             </subviews>
                                         </view>
                                     </tabViewItem>
@@ -833,11 +844,11 @@
                                                 <scrollView fixedFrame="YES" borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KhZ-rE-1ca">
                                                     <rect key="frame" x="17" y="17" width="422" height="110"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                    <clipView key="contentView" ambiguous="YES" copiesOnScroll="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tm1-gn-MQg">
+                                                    <clipView key="contentView" copiesOnScroll="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tm1-gn-MQg">
                                                         <rect key="frame" x="1" y="1" width="420" height="108"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <textView ambiguous="YES" importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" smartInsertDelete="YES" id="wPD-hx-ZnU">
+                                                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" smartInsertDelete="YES" id="wPD-hx-ZnU">
                                                                 <rect key="frame" x="0.0" y="0.0" width="420" height="108"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -895,6 +906,7 @@
                         <outlet property="skipNewerButton" destination="CUM-gG-VZ5" id="VTr-YO-FIc"/>
                         <outlet property="sourcePathChangeButton" destination="Szn-oc-MWP" id="RFU-f2-GQT"/>
                         <outlet property="sourcePathCtrl" destination="y2h-o2-ah0" id="RB0-qH-ELb"/>
+                        <outlet property="sourcePathPermissionButton" destination="7iF-UT-ZNi" id="Vlc-zk-P3C"/>
                         <outlet property="verboseButton" destination="lVl-RQ-qQf" id="7XL-0s-1bR"/>
                         <outlet property="windowsCompatButton" destination="etn-Qy-vvP" id="fCH-ze-KAp"/>
                         <outlet property="wrapInSourceFolderButton" destination="Bpa-YF-bVq" id="Z1A-8O-b2v"/>
@@ -969,7 +981,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="roundRect" title="Show output" bezelStyle="roundedRect" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VrU-5a-Js2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="controlContent"/>
+                                    <font key="font" metaFont="label" size="12"/>
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gvW-uY-pIy">
@@ -1010,6 +1022,7 @@
     </scenes>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSInfo" width="32" height="32"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
         <image name="icon-chess" width="14" height="14"/>
         <image name="icon-play" width="14" height="14"/>

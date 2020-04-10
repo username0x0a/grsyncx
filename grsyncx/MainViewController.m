@@ -10,13 +10,14 @@
 #import "SyncingViewController.h"
 #import "WindowActionsResponder.h"
 
+#import <pwd.h>
 
-#pragma mark - Source help popup controller -
+
+#pragma mark - Helping popup controllers -
 
 
-@interface SourceHelpPopupViewController : NSViewController
-
-@end
+@interface SourceHelpPopupViewController : NSViewController @end
+@interface PermissionsHelpPopupViewController : NSViewController @end
 
 
 #pragma mark - Main view controller -
@@ -29,6 +30,7 @@
 @property (nonatomic, weak) IBOutlet NSPathControl *sourcePathCtrl;
 @property (nonatomic, weak) IBOutlet NSPathControl *destinationPathCtrl;
 
+@property (nonatomic, weak) IBOutlet NSButton *sourcePathPermissionButton;
 @property (nonatomic, weak) IBOutlet NSButton *sourcePathChangeButton;
 @property (nonatomic, weak) IBOutlet NSButton *destinationPathChangeButton;
 
@@ -118,6 +120,8 @@
 
 	_sourcePathCtrl.layer.cornerRadius = 4;
 	_destinationPathCtrl.layer.cornerRadius = 4;
+
+	_sourcePathPermissionButton.hidden = [self hasFullDiskAccess];
 }
 
 
@@ -139,6 +143,64 @@
 	alert.alertStyle = NSAlertStyleCritical;
 	[alert addButtonWithTitle:NSLocalizedString(@"Close", @"Button title")];
 	[alert beginSheetModalForWindow:self.view.window completionHandler:nil];
+}
+
+
+#pragma mark - Helpers
+
+
+- (BOOL)isSandboxed
+{
+	static BOOL sandbox = NO;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sandbox = [[NSProcessInfo processInfo] environment]
+		          [@"APP_SANDBOX_CONTAINER_ID"] != nil;
+	});
+
+	return sandbox;
+}
+
+- (NSString *)userHomeFolderPath
+{
+	static NSString *homeFolder;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+
+		if ([self isSandboxed])
+		{
+			struct passwd *pw = getpwuid(getuid());
+			assert(pw);
+			homeFolder = [NSString stringWithUTF8String:pw->pw_dir];
+		}
+		else homeFolder = NSHomeDirectory();
+
+	});
+
+	return homeFolder;
+}
+
+- (BOOL)hasFullDiskAccess
+{
+	NSString *home = [self userHomeFolderPath];
+	NSString *path;
+
+	if (@available(macOS 10.15, *))
+	     path = @"Library/Safari/CloudTabs.db";
+	else path = @"Library/Safari/Bookmarks.plist";
+
+	path = [home stringByAppendingPathComponent:path];
+
+	BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:path];
+	NSData *data = [NSData dataWithContentsOfFile:path];
+
+	if (data == nil && fileExists)
+		return NO; // Denied
+	if (fileExists)
+		return YES; // Authorized
+	return NO; // Not determined
 }
 
 
@@ -175,9 +237,23 @@
 	}];
 }
 
-- (IBAction)displayHelp:(id)sender
+- (IBAction)displaySourceHelp:(id)sender
 {
 	SourceHelpPopupViewController *vc = [[SourceHelpPopupViewController alloc] init];
+
+	NSRect rect = [sender convertRect:[sender bounds] toView:self.view];
+
+	NSPopover *helpPopover = [NSPopover new];
+	helpPopover.contentSize = vc.preferredContentSize;
+	helpPopover.behavior = NSPopoverBehaviorTransient;;
+	helpPopover.animates = YES;
+	helpPopover.contentViewController = vc;
+	[helpPopover showRelativeToRect:rect ofView:self.view preferredEdge:NSRectEdgeMaxX];
+}
+
+- (IBAction)displayPermissionsHelp:(id)sender
+{
+	PermissionsHelpPopupViewController *vc = [[PermissionsHelpPopupViewController alloc] init];
 
 	NSRect rect = [sender convertRect:[sender bounds] toView:self.view];
 
@@ -397,6 +473,42 @@
 - (NSSize)preferredContentSize
 {
 	return CGSizeMake(512, 192);
+}
+
+@end
+
+
+#pragma mark - Permissions help popup controller -
+
+
+@implementation PermissionsHelpPopupViewController
+
+- (void)loadView
+{
+	CGFloat inset = 12;
+	CGSize size = self.preferredContentSize;
+	CGRect frame = CGRectMake(inset, inset, size.width-2*inset, size.height-2*inset);
+	NSView *view = self.view = [[NSView alloc] initWithFrame:
+		NSRectFromCGRect(CGRectMake(0, 0, size.width, size.height))];
+
+	NSTextField *desc = [[NSTextField alloc] initWithFrame:frame];
+	desc.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	desc.editable = NO;
+	desc.selectable = NO;
+	desc.backgroundColor = [NSColor clearColor];
+	desc.bezeled = NO; desc.bordered = NO;
+	desc.stringValue = NSLocalizedString(@"macOS keeps your files implicitly safe by "
+		"requiring additional permissions before apps can read its contents. You might "
+		"be asked for these permissions at any time during the synchronization.\n\n"
+		"To make the synchronization process easier, you can grant grsyncx Full Disk "
+		"Access in System Preferences → Security & Privacy → Privacy tab.\n\nThis "
+		"step is completely optional.", @"File permissions popup help description");
+	[view addSubview:desc];
+}
+
+- (NSSize)preferredContentSize
+{
+	return CGSizeMake(320, 188);
 }
 
 @end
