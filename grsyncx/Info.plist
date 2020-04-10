@@ -34,5 +34,23 @@
 	<true/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
+	<key>NSDesktopFolderUsageDescription</key>
+	<string>grsyncx requires a permission to access your Desktop folder as you&apos;ve selected it to be synchronized.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>grsyncx requires a permission to access your Documents folder as you&apos;ve selected it to be synchronized.</string>
+	<key>NSDownloadsFolderUsageDescription</key>
+	<string>grsyncx requires a permission to access your Downloads folder as you&apos;ve selected it to be synchronized.</string>
+	<key>NSNetworkVolumesUsageDescription</key>
+	<string>grsyncx requires a permission to access network volumes as you&apos;ve selected it to be synchronized.</string>
+	<key>NSRemovableVolumesUsageDescription</key>
+	<string>grsyncx requires a permission to access removable volumes as you&apos;ve selected it to be synchronized.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>grsyncx requires a permission to access Photo Library data as you&apos;ve selected it to be synchronized.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>grsyncx requires a permission to access Calendars data as you&apos;ve selected it to be synchronized.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>grsyncx requires a permission to access Reminders data as you&apos;ve selected it to be synchronized.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>grsyncx requires a permission to access Contacts data as you&apos;ve selected it to be synchronized.</string>
 </dict>
 </plist>
