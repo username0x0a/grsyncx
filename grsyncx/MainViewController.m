@@ -115,7 +115,9 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	_sourcePathCtrl.URL = [NSURL fileURLWithPath:NSHomeDirectory()];
+	NSString *homePath = [self userHomeFolderPath];
+
+	_sourcePathCtrl.URL = [NSURL fileURLWithPath:homePath];
 	_additionalOptsTextView.font = [NSFont userFixedPitchFontOfSize:13];
 
 	_sourcePathCtrl.layer.cornerRadius = 4;
