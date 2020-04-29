@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Notifications.h"
 
 @interface AppDelegate ()
 
@@ -31,6 +32,8 @@
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *__unused)sender
 {
+	[[NSNotificationCenter defaultCenter] postNotificationName:GRSAppWillTerminateNotification object:nil];
+
 	return YES; // For now
 }
 

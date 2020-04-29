@@ -6,9 +6,12 @@
 //  Copyright © 2020 Michal Zelinka. All rights reserved.
 //
 
+#import "SyncProfile.h"
 #import "MainViewController.h"
 #import "SyncingViewController.h"
 #import "WindowActionsResponder.h"
+
+#import "Settings.h"
 
 #import <pwd.h>
 
@@ -25,6 +28,10 @@
 
 @interface MainViewController () <WindowActionsResponder>
 
+#pragma mark General
+
+@property (nonatomic, strong) Settings *settings;
+
 #pragma mark Basic properties
 
 @property (nonatomic, weak) IBOutlet NSPathControl *sourcePathCtrl;
@@ -34,66 +41,37 @@
 @property (nonatomic, weak) IBOutlet NSButton *sourcePathChangeButton;
 @property (nonatomic, weak) IBOutlet NSButton *destinationPathChangeButton;
 
-// trailing "/" in source path
 @property (nonatomic, weak) IBOutlet NSButton *wrapInSourceFolderButton;
 @property (nonatomic, weak) IBOutlet NSButton *wrapInSourceFolderHelpButton;
 
-// -t, --times | Preserve time
 @property (nonatomic, weak) IBOutlet NSButton *preserveTimeButton;
-// -p, --perms | Preserve permissions
 @property (nonatomic, weak) IBOutlet NSButton *preservePermissionsButton;
-// -o, --owner | Preserve owner (super-user only)
 @property (nonatomic, weak) IBOutlet NSButton *preserveOwnerButton;
-// -g, --group | Preserve group
 @property (nonatomic, weak) IBOutlet NSButton *preserveGroupButton;
-// -E | Preserve extended attributes
 @property (nonatomic, weak) IBOutlet NSButton *preserveExtAttrsButton;
 
-// --delete | Delete extraneous files from the destination dirs
 @property (nonatomic, weak) IBOutlet NSButton *deleteOnDestButton;
-// -x, --one-file-system | Don't cross filesystem boundaries
 @property (nonatomic, weak) IBOutlet NSButton *dontLeaveFilesystButton;
-// -v, --verbose | Increase verbosity
 @property (nonatomic, weak) IBOutlet NSButton *verboseButton;
-// --progress | Show progress during transfer
 @property (nonatomic, weak) IBOutlet NSButton *showTransProgressButton;
-// --ignore-existing | Ignore files which already exist in the destination
 @property (nonatomic, weak) IBOutlet NSButton *ignoreExistingButton;
-// --size-only | Skip file that match in size, ignore time and checksum
 @property (nonatomic, weak) IBOutlet NSButton *sizeOnlyButton;
-// -u, --update | Skip files that are newer in the destination
 @property (nonatomic, weak) IBOutlet NSButton *skipNewerButton;
-// --modify-window=1 | Compare modification times with reduced accuracy,
-//                     workaround for a FAT FS limitation
 @property (nonatomic, weak) IBOutlet NSButton *windowsCompatButton;
 
 #pragma mark Advanced properties
 
-// -c, --checksum | Skip based on checksum, not time and size
 @property (nonatomic, weak) IBOutlet NSButton *alwaysChecksumButton;
-// -z, --compress | Compress data during transfer (if one+ side is remote)
 @property (nonatomic, weak) IBOutlet NSButton *compressFileDataButton;
-// -D | Same as --devices --specials
 @property (nonatomic, weak) IBOutlet NSButton *preserveDevicesButton;
-// --existing | Only update existing files, skip new
 @property (nonatomic, weak) IBOutlet NSButton *existingFilesButton;
-// -P | Same as --partial --progress
 @property (nonatomic, weak) IBOutlet NSButton *partialTransFilesButton;
-// --numeric-ids | Keep numeric UID/GID instead of mapping its names
 @property (nonatomic, weak) IBOutlet NSButton *noUIDGIDMapButton;
-// -l | Symbolic links are copied as such, do not copy link target file
 @property (nonatomic, weak) IBOutlet NSButton *preserveSymlinksButton;
-// -H, --hard-links | Hard-links are copied as such, do not copy link target file
 @property (nonatomic, weak) IBOutlet NSButton *preserveHardLinksButton;
-// -b, --backup | Make backups of existing files in the destination,
-//                see --suffix & --backup-dir
 @property (nonatomic, weak) IBOutlet NSButton *makeBackupsButton;
-// -i, --itemize-changes | Show additional information on every changed file
 @property (nonatomic, weak) IBOutlet NSButton *showItemizedChangesButton;
-// -d (vs -r) | If checked, source subdirectories will be ignored
 @property (nonatomic, weak) IBOutlet NSButton *disableRecursionButton;
-// -s | Protect remote args from shell expansion, avoids the need to
-//      manually escape filename args like --exclude
 @property (nonatomic, weak) IBOutlet NSButton *protectRemoteArgsButton;
 
 @property (nonatomic, weak) IBOutlet NSTextView *additionalOptsTextView;
@@ -113,7 +91,8 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+	_settings = [Settings shared];
 
 	NSString *homePath = [self userHomeFolderPath];
 
@@ -124,13 +103,99 @@
 	_destinationPathCtrl.layer.cornerRadius = 4;
 
 	_sourcePathPermissionButton.hidden = [self hasFullDiskAccess];
+
+	// Reload last used profile
+	[self applySyncProfile:_settings.lastUsedProfile];
 }
 
+- (void)viewWillDisappear
+{
+	[super viewWillDisappear];
+
+	_settings.lastUsedProfile = [self syncProfileForCurrentValues];
+}
 
 - (void)setRepresentedObject:(id)representedObject {
 	[super setRepresentedObject:representedObject];
 
 	// Update the view, if already loaded.
+}
+
+
+#pragma mark - Profiles handling
+
+
+- (void)applySyncProfile:(SyncProfile *)profile
+{
+	NSURL *srcURL = nil;
+	NSURL *dstURL = nil;
+
+	if (profile.sourcePath)
+		srcURL = [NSURL fileURLWithPath:profile.sourcePath];
+	if (profile.destinationPath)
+		dstURL = [NSURL fileURLWithPath:profile.destinationPath];
+
+	_sourcePathCtrl.URL = srcURL;
+	_destinationPathCtrl.URL = dstURL;
+	_wrapInSourceFolderButton.state = profile.wrapInSourceFolder ?
+		NSControlStateValueOn : NSControlStateValueOff;
+
+	RSyncBasicProp basicProps = profile.basicProperties;
+	RSyncAdvancedProp advProps = profile.advancedProperties;
+
+	#define HAS(x) ((x) > 0)
+
+	[[self basicPropertiesMapping] enumerateKeysAndObjectsUsingBlock:
+	 ^(NSNumber *key, NSButton *obj, BOOL *__unused stop) {
+		obj.state = HAS(basicProps & key.unsignedIntegerValue) ?
+			NSControlStateValueOn : NSControlStateValueOff;
+	}];
+
+	[[self advancedPropertiesMapping] enumerateKeysAndObjectsUsingBlock:
+	 ^(NSNumber *key, NSButton *obj, BOOL *__unused stop) {
+		obj.state = HAS(advProps & key.unsignedIntegerValue) ?
+			NSControlStateValueOn : NSControlStateValueOff;
+	}];
+
+	_additionalOptsTextView.string = profile.additionalOptions ?: @"";
+}
+
+- (SyncProfile *)syncProfileForCurrentValues
+{
+	SyncProfile *prof = [SyncProfile new];
+
+	NSURL *srcURL = _sourcePathCtrl.pathItems.lastObject.URL;
+	NSURL *dstURL = _destinationPathCtrl.pathItems.lastObject.URL;
+
+	prof.sourcePath = srcURL.path;
+	prof.destinationPath = dstURL.path;
+	prof.wrapInSourceFolder = _wrapInSourceFolderButton.state == NSControlStateValueOn;
+
+	__block RSyncBasicProp basicProps = RSyncBasicPropNone;
+	__block RSyncAdvancedProp advProps = RSyncAdvancedPropNone;
+
+	#define HAS(x) ((x) > 0)
+
+	[[self basicPropertiesMapping] enumerateKeysAndObjectsUsingBlock:
+	 ^(NSNumber *key, NSButton *obj, BOOL *__unused stop) {
+		if (obj.state == NSControlStateValueOn)
+			basicProps |= key.unsignedIntegerValue;
+	}];
+
+	[[self advancedPropertiesMapping] enumerateKeysAndObjectsUsingBlock:
+	 ^(NSNumber *key, NSButton *obj, BOOL *__unused stop) {
+		if (obj.state == NSControlStateValueOn)
+			advProps |= key.unsignedIntegerValue;
+	}];
+
+	prof.basicProperties = basicProps;
+	prof.advancedProperties = advProps;
+
+	NSString *additional = _additionalOptsTextView.string;
+	if (additional.length)
+		prof.additionalOptions = additional;
+
+	return prof;
 }
 
 
@@ -270,56 +335,41 @@
 
 #pragma mark - Rsync command
 
-
-- (NSArray<NSString *> *)collectArguments
+- (NSDictionary<NSNumber *, NSButton *> *)basicPropertiesMapping
 {
-	NSMutableArray<NSString *> *args = [NSMutableArray arrayWithCapacity:32];
+	return @{
+		@(RSyncBasicPropPreserveTime): _preserveTimeButton,
+		@(RSyncBasicPropPreservePermissions): _preservePermissionsButton,
+		@(RSyncBasicPropPreserveOwner): _preserveOwnerButton,
+		@(RSyncBasicPropPreserveGroup): _preserveGroupButton,
+		@(RSyncBasicPropPreserveExtAttrs): _preserveExtAttrsButton,
+		@(RSyncBasicPropDeleteOnDest): _deleteOnDestButton,
+		@(RSyncBasicPropDontLeaveFilesyst): _dontLeaveFilesystButton,
+		@(RSyncBasicPropVerbose): _verboseButton,
+		@(RSyncBasicPropShowTransProgress): _showTransProgressButton,
+		@(RSyncBasicPropIgnoreExisting): _ignoreExistingButton,
+		@(RSyncBasicPropSizeOnly): _sizeOnlyButton,
+		@(RSyncBasicPropSkipNewer): _skipNewerButton,
+		@(RSyncBasicPropWindowsCompat): _windowsCompatButton,
+	};
+}
 
-	#define isOn(btn) (btn.state == NSControlStateValueOn)
-
-	if (isOn(_preserveTimeButton))           [args addObject:@"-t"];
-	if (isOn(_preservePermissionsButton))    [args addObject:@"-p"];
-	if (isOn(_preserveOwnerButton))          [args addObject:@"-o"];
-	if (isOn(_preserveGroupButton))          [args addObject:@"-g"];
-	if (isOn(_preserveExtAttrsButton))       [args addObject:@"-E"];
-
-	if (isOn(_deleteOnDestButton))           [args addObject:@"--delete"];
-	if (isOn(_dontLeaveFilesystButton))      [args addObject:@"-x"];
-	if (isOn(_verboseButton))                [args addObject:@"-v"];
-	if (isOn(_showTransProgressButton))      [args addObject:@"--progress"];
-	if (isOn(_ignoreExistingButton))         [args addObject:@"--ignore-existing"];
-	if (isOn(_sizeOnlyButton))               [args addObject:@"--size-only"];
-	if (isOn(_skipNewerButton))              [args addObject:@"--update"];
-	if (isOn(_windowsCompatButton))          [args addObject:@"--modify-window=1"];
-
-	if (isOn(_alwaysChecksumButton))         [args addObject:@"--checksum"];
-	if (isOn(_compressFileDataButton))       [args addObject:@"--compress"];
-	if (isOn(_preserveDevicesButton))        [args addObject:@"-D"];
-	if (isOn(_existingFilesButton))          [args addObject:@"--existing"];
-	if (isOn(_partialTransFilesButton))      [args addObject:@"-P"];
-	if (isOn(_noUIDGIDMapButton))            [args addObject:@"--numeric-ids"];
-	if (isOn(_preserveSymlinksButton))       [args addObject:@"-l"];
-	if (isOn(_preserveHardLinksButton))      [args addObject:@"-H"];
-	if (isOn(_makeBackupsButton))            [args addObject:@"--backup"];
-	if (isOn(_showItemizedChangesButton))    [args addObject:@"-i"];
-
-	if (isOn(_disableRecursionButton))       [args addObject:@"-d"];
-	else                                     [args addObject:@"-r"];
-
-	if (isOn(_protectRemoteArgsButton))      [args addObject:@"-s"];
-
-	NSArray<NSString *> *additionalArgs =
-	[[_additionalOptsTextView.textStorage.string
-	  componentsSeparatedByString:@" "] filteredArrayUsingPredicate:
-	 [NSPredicate predicateWithBlock:^BOOL(NSString *arg,
-	  NSDictionary<NSString *,id> *__unused bindings) {
-		return arg.length > 0;
-	}]];
-
-	if (additionalArgs.count)
-		[args addObjectsFromArray:additionalArgs];
-
-	return [args copy];
+- (NSDictionary<NSNumber *, NSButton *> *)advancedPropertiesMapping
+{
+	return @{
+		@(RSyncAdvancedPropAlwaysChecksum): _alwaysChecksumButton,
+		@(RSyncAdvancedPropCompressFileData): _compressFileDataButton,
+		@(RSyncAdvancedPropPreserveDevices): _preserveDevicesButton,
+		@(RSyncAdvancedPropExistingFiles): _existingFilesButton,
+		@(RSyncAdvancedPropPartialTransFiles): _partialTransFilesButton,
+		@(RSyncAdvancedPropNoUIDGIDMap): _noUIDGIDMapButton,
+		@(RSyncAdvancedPropPreserveSymlinks): _preserveSymlinksButton,
+		@(RSyncAdvancedPropPreserveHardLinks): _preserveHardLinksButton,
+		@(RSyncAdvancedPropMakeBackups): _makeBackupsButton,
+		@(RSyncAdvancedPropShowItemizedChanges): _showItemizedChangesButton,
+		@(RSyncAdvancedPropDisableRecursion): _disableRecursionButton,
+		@(RSyncAdvancedPropProtectRemoteArgs): _protectRemoteArgsButton,
+	};
 }
 
 - (void)collectCurrentOptionsWithCompletion:(void (NS_NOESCAPE ^)(SyncingOptions *, NSString *))completion
@@ -352,7 +402,8 @@
 		return;
 	}
 
-	NSMutableArray<NSString *> *args = [[self collectArguments] mutableCopy];
+	SyncProfile *currentProfile = [self syncProfileForCurrentValues];
+	NSMutableArray<NSString *> *args = [[currentProfile calculatedArguments] mutableCopy];
 
 	if (_runSimulated)
 		[args addObject:@"-n"];
