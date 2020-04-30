@@ -9,11 +9,6 @@
 #import "SyncingViewController.h"
 
 
-@implementation SyncingOptions
-
-@end
-
-
 @interface SyncingViewController ()
 
 @property (nonatomic, weak) IBOutlet NSProgressIndicator *globProgressIndicator;
@@ -30,6 +25,16 @@
 
 
 @implementation SyncingViewController
+
+- (instancetype)initWithProfile:(SyncProfile *)profile
+{
+	if (self = [super init])
+	{
+		_profile = profile;
+	}
+
+	return self;
+}
 
 - (void)viewDidLoad
 {
@@ -93,13 +98,13 @@
 	// rsync --itemize-changes:
 	// http://www.staroceans.org/e-book/understanding-the-output-of-rsync-itemize-changes.html
 
-	SyncingOptions *options = _syncingOptions;
+	SyncProfile *profile = _profile;
 
-	NSAssert(options != nil, @"Options missing");
+	NSAssert(profile != nil, @"Sync profile is missing");
 
-	NSMutableArray<NSString *> *args = [options.arguments mutableCopy];
-	if (options.sourcePath) [args addObject:options.sourcePath];
-	if (options.destinationPath) [args addObject:options.destinationPath];
+	NSMutableArray<NSString *> *args = [profile.calculatedArguments mutableCopy];
+	if (profile.sourcePath) [args addObject:profile.calculatedSourcePath];
+	if (profile.destinationPath) [args addObject:profile.calculatedDestinationPath];
 
 	NSTask *task = [NSTask new];
 	task.launchPath = @"/usr/bin/rsync";

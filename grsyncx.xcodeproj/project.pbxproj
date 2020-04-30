@@ -9,11 +9,15 @@
 /* Begin PBXBuildFile section */
 		D630126323CDBDA700D07057 /* SyncingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D630126223CDBDA700D07057 /* SyncingViewController.m */; };
 		D67B6A2023CC777500891072 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D67B6A1F23CC777500891072 /* WindowController.m */; };
+		EF2B6CD424537795000EFBBF /* SyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2B6CD324537795000EFBBF /* SyncProfile.m */; };
 		EF8658C723CB84C50041726A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658C623CB84C50041726A /* AppDelegate.m */; };
 		EF8658CA23CB84C50041726A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658C923CB84C50041726A /* MainViewController.m */; };
 		EF8658CC23CB84C80041726A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF8658CB23CB84C80041726A /* Assets.xcassets */; };
 		EF8658CF23CB84C80041726A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF8658CD23CB84C80041726A /* Main.storyboard */; };
 		EF8658D223CB84C80041726A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658D123CB84C80041726A /* main.m */; };
+		EFB48980245AC5B800CB2788 /* Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB4897F245AC5B800CB2788 /* Foundation.m */; };
+		EFCFDA702459E5F0008C7853 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCFDA6F2459E5F0008C7853 /* Settings.m */; };
+		EFCFDA762459E845008C7853 /* UNXParsable.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCFDA752459E845008C7853 /* UNXParsable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +27,8 @@
 		D67B6A1F23CC777500891072 /* WindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		D67B6A2123CC78E600891072 /* WindowActionsResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowActionsResponder.h; sourceTree = "<group>"; };
 		D67B6A2223CC996700891072 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		EF2B6CD224537795000EFBBF /* SyncProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncProfile.h; sourceTree = "<group>"; };
+		EF2B6CD324537795000EFBBF /* SyncProfile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyncProfile.m; sourceTree = "<group>"; };
 		EF8658C223CB84C50041726A /* grsyncx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = grsyncx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8658C523CB84C50041726A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EF8658C623CB84C50041726A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -33,6 +39,13 @@
 		EF8658D023CB84C80041726A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF8658D123CB84C80041726A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF8658D323CB84C80041726A /* grsyncx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = grsyncx.entitlements; sourceTree = "<group>"; };
+		EFB4897E245AC5B800CB2788 /* Foundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Foundation.h; sourceTree = "<group>"; };
+		EFB4897F245AC5B800CB2788 /* Foundation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Foundation.m; sourceTree = "<group>"; };
+		EFCFDA6E2459E5F0008C7853 /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
+		EFCFDA6F2459E5F0008C7853 /* Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
+		EFCFDA742459E845008C7853 /* UNXParsable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UNXParsable.h; sourceTree = "<group>"; };
+		EFCFDA752459E845008C7853 /* UNXParsable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UNXParsable.m; sourceTree = "<group>"; };
+		EFCFDA772459F5E5008C7853 /* Notifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +59,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EF2B6CD02453265E000EFBBF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				EF2B6CD724538246000EFBBF /* Window */,
+				EF2B6CD52453821F000EFBBF /* MainView */,
+				EF2B6CD624538234000EFBBF /* SyncingView */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		EF2B6CD12453267B000EFBBF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EF2B6CD224537795000EFBBF /* SyncProfile.h */,
+				EF2B6CD324537795000EFBBF /* SyncProfile.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EF2B6CD52453821F000EFBBF /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				EF8658C823CB84C50041726A /* MainViewController.h */,
+				EF8658C923CB84C50041726A /* MainViewController.m */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		EF2B6CD624538234000EFBBF /* SyncingView */ = {
+			isa = PBXGroup;
+			children = (
+				D630126123CDBDA700D07057 /* SyncingViewController.h */,
+				D630126223CDBDA700D07057 /* SyncingViewController.m */,
+			);
+			path = SyncingView;
+			sourceTree = "<group>";
+		};
+		EF2B6CD724538246000EFBBF /* Window */ = {
+			isa = PBXGroup;
+			children = (
+				D67B6A1E23CC777500891072 /* WindowController.h */,
+				D67B6A1F23CC777500891072 /* WindowController.m */,
+				D67B6A2123CC78E600891072 /* WindowActionsResponder.h */,
+			);
+			path = Window;
+			sourceTree = "<group>";
+		};
 		EF8658B923CB84C50041726A = {
 			isa = PBXGroup;
 			children = (
@@ -65,23 +125,49 @@
 		EF8658C423CB84C50041726A /* grsyncx */ = {
 			isa = PBXGroup;
 			children = (
+				EF2B6CD12453267B000EFBBF /* Models */,
+				EF2B6CD02453265E000EFBBF /* Controllers */,
+				EFCFDA6D2459E403008C7853 /* Helpers */,
+				EFB48981245AD47C00CB2788 /* Resources */,
+				EFB48982245AD49700CB2788 /* Support */,
 				EF8658C523CB84C50041726A /* AppDelegate.h */,
 				EF8658C623CB84C50041726A /* AppDelegate.m */,
-				EF8658C823CB84C50041726A /* MainViewController.h */,
-				EF8658C923CB84C50041726A /* MainViewController.m */,
-				D630126123CDBDA700D07057 /* SyncingViewController.h */,
-				D630126223CDBDA700D07057 /* SyncingViewController.m */,
-				D67B6A2123CC78E600891072 /* WindowActionsResponder.h */,
-				D67B6A1E23CC777500891072 /* WindowController.h */,
-				D67B6A1F23CC777500891072 /* WindowController.m */,
-				EF8658CB23CB84C80041726A /* Assets.xcassets */,
-				EF8658CD23CB84C80041726A /* Main.storyboard */,
+				EF8658D323CB84C80041726A /* grsyncx.entitlements */,
 				EF8658D023CB84C80041726A /* Info.plist */,
 				EF8658D123CB84C80041726A /* main.m */,
-				EF8658D323CB84C80041726A /* grsyncx.entitlements */,
-				D67B6A2223CC996700891072 /* Config.xcconfig */,
 			);
 			path = grsyncx;
+			sourceTree = "<group>";
+		};
+		EFB48981245AD47C00CB2788 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EF8658CB23CB84C80041726A /* Assets.xcassets */,
+				EF8658CD23CB84C80041726A /* Main.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EFB48982245AD49700CB2788 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				D67B6A2223CC996700891072 /* Config.xcconfig */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		EFCFDA6D2459E403008C7853 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				EFCFDA772459F5E5008C7853 /* Notifications.h */,
+				EFCFDA6E2459E5F0008C7853 /* Settings.h */,
+				EFCFDA6F2459E5F0008C7853 /* Settings.m */,
+				EFB4897E245AC5B800CB2788 /* Foundation.h */,
+				EFB4897F245AC5B800CB2788 /* Foundation.m */,
+				EFCFDA742459E845008C7853 /* UNXParsable.h */,
+				EFCFDA752459E845008C7853 /* UNXParsable.m */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,10 +241,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF8658CA23CB84C50041726A /* MainViewController.m in Sources */,
+				EFB48980245AC5B800CB2788 /* Foundation.m in Sources */,
+				EF2B6CD424537795000EFBBF /* SyncProfile.m in Sources */,
 				D67B6A2023CC777500891072 /* WindowController.m in Sources */,
 				D630126323CDBDA700D07057 /* SyncingViewController.m in Sources */,
 				EF8658D223CB84C80041726A /* main.m in Sources */,
+				EFCFDA762459E845008C7853 /* UNXParsable.m in Sources */,
 				EF8658C723CB84C50041726A /* AppDelegate.m in Sources */,
+				EFCFDA702459E5F0008C7853 /* Settings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
