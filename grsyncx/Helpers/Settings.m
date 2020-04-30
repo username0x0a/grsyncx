@@ -35,7 +35,7 @@
 	{
 		_defaults = [NSUserDefaults standardUserDefaults];
 
-		NSDictionary *lastProfile = [_defaults dictionaryForKey:@"LastUsedProfile"];
+		NSDictionary *lastProfile = [_defaults dictionaryForKey:@SETTINGS_KEY_LAST_USED_PROFILE];
 		_lastUsedProfile = [[SyncProfile alloc] initFromDictionary:lastProfile] ?: [SyncProfile defaultProfile];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -53,7 +53,7 @@
 
 - (void)saveSettings
 {
-	[_defaults setObject:_lastUsedProfile.asDictionary forKey:@"LastUsedProfile"];
+	[_defaults setObject:_lastUsedProfile.asDictionary forKey:@SETTINGS_KEY_LAST_USED_PROFILE];
 }
 
 @end

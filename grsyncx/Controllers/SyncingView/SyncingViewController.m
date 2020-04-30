@@ -7,6 +7,7 @@
 //
 
 #import "SyncingViewController.h"
+#import "Settings.h"
 
 
 @interface SyncingViewController ()
@@ -106,8 +107,15 @@
 	if (profile.sourcePath) [args addObject:profile.calculatedSourcePath];
 	if (profile.destinationPath) [args addObject:profile.calculatedDestinationPath];
 
+	NSString *rsyncPath = @"/usr/bin/rsync";
+	NSString *customRsyncPath = [[NSUserDefaults standardUserDefaults]
+	                             stringForKey:@SETTINGS_KEY_RSYNC_CMD_PATH];
+
+	if (customRsyncPath.length > 0)
+		rsyncPath = customRsyncPath;
+
 	NSTask *task = [NSTask new];
-	task.launchPath = @"/usr/bin/rsync";
+	task.launchPath = rsyncPath;
 	task.arguments = args;
 
 	NSPipe *pipe = [NSPipe new];

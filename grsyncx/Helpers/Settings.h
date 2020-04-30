@@ -9,6 +9,9 @@
 #import "Foundation.h"
 #import "SyncProfile.h"
 
+#define SETTINGS_KEY_LAST_USED_PROFILE   "LastUsedProfile"
+#define SETTINGS_KEY_RSYNC_CMD_PATH      "RSyncCommandPath"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Settings : NSObject
