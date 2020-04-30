@@ -128,16 +128,32 @@
 				EF2B6CD12453267B000EFBBF /* Models */,
 				EF2B6CD02453265E000EFBBF /* Controllers */,
 				EFCFDA6D2459E403008C7853 /* Helpers */,
+				EFB48981245AD47C00CB2788 /* Resources */,
+				EFB48982245AD49700CB2788 /* Support */,
 				EF8658C523CB84C50041726A /* AppDelegate.h */,
 				EF8658C623CB84C50041726A /* AppDelegate.m */,
-				EF8658CB23CB84C80041726A /* Assets.xcassets */,
-				EF8658CD23CB84C80041726A /* Main.storyboard */,
+				EF8658D323CB84C80041726A /* grsyncx.entitlements */,
 				EF8658D023CB84C80041726A /* Info.plist */,
 				EF8658D123CB84C80041726A /* main.m */,
-				EF8658D323CB84C80041726A /* grsyncx.entitlements */,
-				D67B6A2223CC996700891072 /* Config.xcconfig */,
 			);
 			path = grsyncx;
+			sourceTree = "<group>";
+		};
+		EFB48981245AD47C00CB2788 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EF8658CB23CB84C80041726A /* Assets.xcassets */,
+				EF8658CD23CB84C80041726A /* Main.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EFB48982245AD49700CB2788 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				D67B6A2223CC996700891072 /* Config.xcconfig */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 		EFCFDA6D2459E403008C7853 /* Helpers */ = {
