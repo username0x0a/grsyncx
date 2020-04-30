@@ -15,6 +15,7 @@
 		EF8658CC23CB84C80041726A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF8658CB23CB84C80041726A /* Assets.xcassets */; };
 		EF8658CF23CB84C80041726A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF8658CD23CB84C80041726A /* Main.storyboard */; };
 		EF8658D223CB84C80041726A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658D123CB84C80041726A /* main.m */; };
+		EFB48980245AC5B800CB2788 /* Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = EFB4897F245AC5B800CB2788 /* Foundation.m */; };
 		EFCFDA702459E5F0008C7853 /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCFDA6F2459E5F0008C7853 /* Settings.m */; };
 		EFCFDA762459E845008C7853 /* UNXParsable.m in Sources */ = {isa = PBXBuildFile; fileRef = EFCFDA752459E845008C7853 /* UNXParsable.m */; };
 /* End PBXBuildFile section */
@@ -38,6 +39,8 @@
 		EF8658D023CB84C80041726A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF8658D123CB84C80041726A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EF8658D323CB84C80041726A /* grsyncx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = grsyncx.entitlements; sourceTree = "<group>"; };
+		EFB4897E245AC5B800CB2788 /* Foundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Foundation.h; sourceTree = "<group>"; };
+		EFB4897F245AC5B800CB2788 /* Foundation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Foundation.m; sourceTree = "<group>"; };
 		EFCFDA6E2459E5F0008C7853 /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		EFCFDA6F2459E5F0008C7853 /* Settings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
 		EFCFDA742459E845008C7853 /* UNXParsable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UNXParsable.h; sourceTree = "<group>"; };
@@ -141,10 +144,12 @@
 			isa = PBXGroup;
 			children = (
 				EFCFDA772459F5E5008C7853 /* Notifications.h */,
-				EFCFDA742459E845008C7853 /* UNXParsable.h */,
-				EFCFDA752459E845008C7853 /* UNXParsable.m */,
 				EFCFDA6E2459E5F0008C7853 /* Settings.h */,
 				EFCFDA6F2459E5F0008C7853 /* Settings.m */,
+				EFB4897E245AC5B800CB2788 /* Foundation.h */,
+				EFB4897F245AC5B800CB2788 /* Foundation.m */,
+				EFCFDA742459E845008C7853 /* UNXParsable.h */,
+				EFCFDA752459E845008C7853 /* UNXParsable.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -220,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF8658CA23CB84C50041726A /* MainViewController.m in Sources */,
+				EFB48980245AC5B800CB2788 /* Foundation.m in Sources */,
 				EF2B6CD424537795000EFBBF /* SyncProfile.m in Sources */,
 				D67B6A2023CC777500891072 /* WindowController.m in Sources */,
 				D630126323CDBDA700D07057 /* SyncingViewController.m in Sources */,

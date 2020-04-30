@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#pragma mark - Properties
+
 typedef NS_OPTIONS(NSUInteger, RSyncBasicProp) {
 	RSyncBasicPropNone = 0,
 	// -t, --times | Preserve time
@@ -71,12 +73,18 @@ typedef NS_OPTIONS(NSUInteger, RSyncAdvancedProp) {
 	RSyncAdvancedPropProtectRemoteArgs = (1 << 11),
 };
 
+#pragma mark - Profile
+
 @interface SyncProfile : NSObject
+
+#pragma mark Initializers
 
 + (instancetype)defaultProfile;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
 - (NSDictionary *)asDictionary;
+
+#pragma mark Properties
 
 @property (nonatomic, copy) NSString *name;
 
@@ -91,7 +99,15 @@ typedef NS_OPTIONS(NSUInteger, RSyncAdvancedProp) {
 
 @property (nonatomic, copy, nullable) NSString *additionalOptions;
 
-- (NSArray<NSString *> *)calculatedArguments;
+#pragma mark Temporary properties
+
+@property (atomic) BOOL simulatedRun;
+
+#pragma mark Methods
+
+@property (nonatomic, copy, readonly, nullable) NSString *calculatedSourcePath;
+@property (nonatomic, copy, readonly, nullable) NSString *calculatedDestinationPath;
+@property (nonatomic, copy, readonly, nullable) NSArray<NSString *> *calculatedArguments;
 
 @end
 

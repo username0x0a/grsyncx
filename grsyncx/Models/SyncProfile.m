@@ -8,14 +8,18 @@
 
 #import "SyncProfile.h"
 #import "UNXParsable.h"
+#import "Foundation.h"
 
 @implementation SyncProfile
+
+#pragma mark - Initializers
 
 + (instancetype)defaultProfile
 {
 	SyncProfile *def = [SyncProfile new];
 
 	def.sourcePath = @"~";
+	def.wrapInSourceFolder = YES;
 
 	def.basicProperties =
 		RSyncBasicPropPreserveTime | RSyncBasicPropPreservePermissions |
@@ -25,7 +29,6 @@
 
 	def.advancedProperties =
 		RSyncAdvancedPropPreserveSymlinks | RSyncAdvancedPropShowItemizedChanges;
-
 
 	return def;
 }
@@ -73,9 +76,26 @@
 	return [dict copy];
 }
 
+#pragma mark - Getters
+
 - (NSString *)name
 {
 	return _name ?: NSLocalizedString(@"default", @"Default sync profile name");
+}
+
+- (NSString *)calculatedSourcePath
+{
+	NSString *path = [_sourcePath copy];
+
+	if (path && !_wrapInSourceFolder)
+		path = [path stringByAppendingString:@"/"];
+
+	return path;
+}
+
+- (NSString *)calculatedDestinationPath
+{
+	return [_destinationPath copy];
 }
 
 - (NSArray<NSString *> *)calculatedArguments
@@ -120,15 +140,16 @@
 	if (HAS(adv & RSyncAdvancedPropProtectRemoteArgs))     [args addObject:@"-s"];
 
 	NSArray<NSString *> *additionalArgs =
-	[[_additionalOptions
-	  componentsSeparatedByString:@" "] filteredArrayUsingPredicate:
-	 [NSPredicate predicateWithBlock:^BOOL(NSString *arg,
-	  NSDictionary<NSString *,id> *__unused bindings) {
-		return arg.length > 0;
-	}]];
+	[[_additionalOptions componentsSeparatedByString:@" "]
+	 filteredArrayUsingBlock:^BOOL(NSString *element) {
+		return element.length > 0;
+	}];
 
 	if (additionalArgs.count)
 		[args addObjectsFromArray:additionalArgs];
+
+	if (_simulatedRun)
+		[args addObject:@"-n"];
 
 	return [args copy];
 }

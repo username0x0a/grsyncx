@@ -6,22 +6,14 @@
 //  Copyright © 2020 Michal Zelinka. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
+#import "SyncProfile.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SyncingOptions : NSObject
-
-@property (nonatomic, copy, nullable) NSString *sourcePath;
-@property (nonatomic, copy, nullable) NSString *destinationPath;
-
-@property (nonatomic, copy, nullable) NSArray<NSString *> *arguments;
-
-@end
-
 @interface SyncingViewController : NSViewController
 
-@property (nonatomic, strong, nullable) SyncingOptions *syncingOptions;
+@property (nonatomic, strong, nullable) SyncProfile *profile;
 
 @end
 

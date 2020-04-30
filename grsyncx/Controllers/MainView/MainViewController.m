@@ -6,11 +6,11 @@
 //  Copyright © 2020 Michal Zelinka. All rights reserved.
 //
 
-#import "SyncProfile.h"
 #import "MainViewController.h"
 #import "SyncingViewController.h"
 #import "WindowActionsResponder.h"
 
+#import "SyncProfile.h"
 #import "Settings.h"
 
 #import <pwd.h>
@@ -127,13 +127,14 @@
 
 - (void)applySyncProfile:(SyncProfile *)profile
 {
+	NSString *path = nil;
 	NSURL *srcURL = nil;
 	NSURL *dstURL = nil;
 
-	if (profile.sourcePath)
-		srcURL = [NSURL fileURLWithPath:profile.sourcePath];
-	if (profile.destinationPath)
-		dstURL = [NSURL fileURLWithPath:profile.destinationPath];
+	if ((path = profile.sourcePath))
+		srcURL = [NSURL fileURLWithPath:path];
+	if ((path = profile.destinationPath))
+		dstURL = [NSURL fileURLWithPath:path];
 
 	_sourcePathCtrl.URL = srcURL;
 	_destinationPathCtrl.URL = dstURL;
@@ -194,6 +195,8 @@
 	NSString *additional = _additionalOptsTextView.string;
 	if (additional.length)
 		prof.additionalOptions = additional;
+
+	prof.simulatedRun = _runSimulated;
 
 	return prof;
 }
@@ -372,23 +375,27 @@
 	};
 }
 
-- (void)collectCurrentOptionsWithCompletion:(void (NS_NOESCAPE ^)(SyncingOptions *, NSString *))completion
+- (void)collectCurrentProfileWithCompletion:(void (NS_NOESCAPE ^)(SyncProfile *, NSString *))completion
 {
 	if (!completion) return;
 
-	NSURL *srcURL = _sourcePathCtrl.pathItems.lastObject.URL;
-	NSURL *dstURL = _destinationPathCtrl.pathItems.lastObject.URL;
+	SyncProfile *currentProfile = [self syncProfileForCurrentValues];
 
 	NSString *err = nil;
 
-	if (!srcURL)
+	NSString *srcPath = currentProfile.sourcePath;
+	NSString *dstPath = currentProfile.destinationPath;
+	BOOL isDirectory = NO;
+
+	if (!srcPath)
 		err = NSLocalizedString(@"Source path isn't set", @"View label");
-	else if (!dstURL)
+	else if (!dstPath)
 		err = NSLocalizedString(@"Destination path isn't set", @"View label");
 
-	NSString *srcPath = srcURL.path;
-	NSString *dstPath = dstURL.path;
-	BOOL isDirectory = NO;
+	if (err) {
+		completion(nil, err);
+		return;
+	}
 
 	NSFileManager *fm = [NSFileManager defaultManager];
 
@@ -402,21 +409,7 @@
 		return;
 	}
 
-	SyncProfile *currentProfile = [self syncProfileForCurrentValues];
-	NSMutableArray<NSString *> *args = [[currentProfile calculatedArguments] mutableCopy];
-
-	if (_runSimulated)
-		[args addObject:@"-n"];
-
-	if (_wrapInSourceFolderButton.state == NSControlStateValueOff)
-		srcPath = [srcPath stringByAppendingString:@"/"];
-
-	SyncingOptions *options = [SyncingOptions new];
-	options.sourcePath = srcPath;
-	options.destinationPath = dstPath;
-	options.arguments = args;
-
-	completion(options, nil);
+	completion(currentProfile, nil);
 }
 
 - (void)prepareForSegue:(__unused NSStoryboardSegue *)segue sender:(__unused id)sender
@@ -428,9 +421,9 @@
 		if (![vc isKindOfClass:[SyncingViewController class]])
 			@throw @"Unexpected view controller";
 
-		[self collectCurrentOptionsWithCompletion:
-		 ^(SyncingOptions *options, __unused NSString *err) {
-			vc.syncingOptions = options;
+		[self collectCurrentProfileWithCompletion:
+		 ^(SyncProfile *profile, NSString *__unused error) {
+			vc.profile = profile;
 		}];
 	}
 }
@@ -439,29 +432,13 @@
 {
 	_runSimulated = simulated;
 
-	[self collectCurrentOptionsWithCompletion:
-	 ^(__unused SyncingOptions *opts, NSString *error) {
+	[self collectCurrentProfileWithCompletion:
+	 ^(SyncProfile *__unused profile, NSString *error) {
 
 		if (error) [self showAlertWithTitle:error message:nil];
 		else [self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
 
 	}];
-}
-
-
-#pragma mark - Syncing options handler
-
-
-- (SyncingOptions *)syncingOptions
-{
-	__block SyncingOptions *options = nil;
-
-	[self collectCurrentOptionsWithCompletion:
-	 ^(SyncingOptions *collected, __unused NSString *err) {
-		options = collected;
-	}];
-
-	return options;
 }
 
 

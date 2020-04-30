@@ -6,7 +6,7 @@
 //  Copyright © 2020 Michal Zelinka. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
 
 int main(int argc, const char * argv[])
 {
