@@ -79,12 +79,30 @@
 	NSLog(@"Global progress: %lf", progress * 100);
 }
 
-- (IBAction)stopButtonAction:(id)sender
+- (void)appendLogLine:(NSString *)line
+{
+	NSTextView *tv = _outputTextView;
+	BOOL smartScroll = tv.visibleRect.origin.y + tv.visibleRect.size.height >= tv.bounds.size.height;
+
+	NSAttributedString *str = [[NSAttributedString alloc] initWithString:line attributes:@{
+		NSFontAttributeName: tv.font,
+		NSForegroundColorAttributeName: tv.textColor,
+	}];
+
+	[tv.textStorage appendAttributedString:str];
+
+	if (smartScroll)
+		[tv scrollToEndOfDocument:self];
+
+	NSLog(@"[OUTPUT] %@", line);
+}
+
+- (IBAction)stopButtonAction:(__unused id)sender
 {
 	[self terminateRsync];
 }
 
-- (IBAction)closeButtonAction:(id)sender
+- (IBAction)closeButtonAction:(__unused id)sender
 {
 	[self dismissViewController:self];
 }
@@ -114,6 +132,11 @@
 	if (customRsyncPath.length > 0)
 		rsyncPath = customRsyncPath;
 
+	NSString *commandLineLog = [NSString stringWithFormat:@"%@ %@\n\n",
+		rsyncPath, [args componentsJoinedByString:@" "]];
+
+	[self appendLogLine:commandLineLog];
+
 	NSTask *task = [NSTask new];
 	task.launchPath = rsyncPath;
 	task.arguments = args;
@@ -131,7 +154,6 @@
 	blockCounter = 0;
 
 	NSFileHandle *handle = pipe.fileHandleForReading;
-	NSTextView *outputTextView = _outputTextView;
 
 	[handle waitForDataInBackgroundAndNotify];
 
@@ -174,20 +196,7 @@
 			});
 		}
 
-		NSTextView *tv = outputTextView;
-		BOOL smartScroll = tv.visibleRect.origin.y + tv.visibleRect.size.height >= tv.bounds.size.height;
-
-		NSAttributedString *str = [[NSAttributedString alloc] initWithString:line attributes:@{
-			NSFontAttributeName: tv.font,
-			NSForegroundColorAttributeName: tv.textColor,
-		}];
-
-		[tv.textStorage appendAttributedString:str];
-
-		if (smartScroll)
-			[tv scrollToEndOfDocument:self];
-
-		NSLog(@"[OUTPUT] %@", line);
+		[self appendLogLine:line];
 
 		[handle waitForDataInBackgroundAndNotify];
 	}];
