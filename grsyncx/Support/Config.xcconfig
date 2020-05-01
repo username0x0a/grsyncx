@@ -9,5 +9,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-GRSYNCX_VERSION = 0.1
-GRSYNCX_BUILD   = 16
+GRSYNCX_VERSION = 0.2
+GRSYNCX_BUILD   = 22
