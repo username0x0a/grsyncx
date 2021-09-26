@@ -1,47 +1,54 @@
 //
-//  SyncProfile.m
+//  Profile.m
 //  grsyncx
 //
 //  Created by Michi on 24/04/2020.
 //  Copyright © 2020 Michal Zelinka. All rights reserved.
 //
 
-#import "SyncProfile.h"
+#import "Profile.h"
 #import "UNXParsable.h"
 #import "Foundation.h"
 
-@implementation SyncProfile
+@implementation Profile
 
 #pragma mark - Initializers
 
+- (instancetype)init
+{
+	if (self = [super init])
+	{
+		_UUID = [NSUUID UUID];
+		_name = NSLocalizedString(@"Default", @"Default sync profile name");
+		_wrapInSourceFolder = YES;
+
+		_basicProperties =
+			RSyncBasicPropPreserveTime | RSyncBasicPropPreservePermissions |
+			RSyncBasicPropPreserveOwner | RSyncBasicPropPreserveGroup |
+			RSyncBasicPropPreserveExtAttrs | RSyncBasicPropDeleteOnDest |
+			RSyncBasicPropVerbose | RSyncBasicPropShowTransProgress;
+
+		_advancedProperties =
+			RSyncAdvancedPropPreserveSymlinks | RSyncAdvancedPropShowItemizedChanges;
+	}
+
+	return self;
+}
+
 + (instancetype)defaultProfile
 {
-	SyncProfile *def = [SyncProfile new];
-
-	def.sourcePath = @"~";
-	def.wrapInSourceFolder = YES;
-
-	def.basicProperties =
-		RSyncBasicPropPreserveTime | RSyncBasicPropPreservePermissions |
-		RSyncBasicPropPreserveOwner | RSyncBasicPropPreserveGroup |
-		RSyncBasicPropPreserveExtAttrs | RSyncBasicPropDeleteOnDest |
-		RSyncBasicPropVerbose | RSyncBasicPropShowTransProgress;
-
-	def.advancedProperties =
-		RSyncAdvancedPropPreserveSymlinks | RSyncAdvancedPropShowItemizedChanges;
-
-	return def;
+	return [Profile new];
 }
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict
 {
+	NSString *uuid = dict.unx_parsable[@"UUID"].string ?: [NSUUID UUID].UUIDString;
 	NSString *name = dict.unx_parsable[@"Name"].string;
 
-	if (!name) return nil;
-
-	if (self = [super init])
+	if (self = [self init])
 	{
-		_name = name;
+		_UUID = [[NSUUID alloc] initWithUUIDString:uuid];
+		if (name) _name = name;
 		_sourcePath = dict.unx_parsable[@"Source"].string;
 		_destinationPath = dict.unx_parsable[@"Destination"].string;
 		_wrapInSourceFolder = dict.unx_parsable[@"WrapInSrcFolder"].number.boolValue;
@@ -53,34 +60,54 @@
 	return self;
 }
 
+- (nonnull id)copyWithZone:(nullable NSZone *)zone
+{
+	Profile *copied = [Profile new];
+
+	copied.UUID = [_UUID copy];
+	copied.name = [_name copy];
+	copied.sourcePath = [_sourcePath copy];
+	copied.destinationPath = [_destinationPath copy];
+	copied.wrapInSourceFolder = _wrapInSourceFolder;
+	copied.basicProperties = _basicProperties;
+	copied.advancedProperties = _advancedProperties;
+	copied.additionalOptions = [_additionalOptions copy];
+
+	return copied;
+}
+
 - (NSDictionary *)asDictionary
 {
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:8];
 
-	dict[@"Name"] = self.name;
+	id obj = nil;
 
-	id obj = _sourcePath;
-	if (obj) dict[@"Source"] = obj;
+	dict[@"UUID"] = obj;
+	if ((obj = _name))
+		dict[@"Name"] = obj;
 
-	obj = _destinationPath;
-	if (obj) dict[@"Destination"] = obj;
+	if ((obj = _sourcePath))
+		dict[@"Source"] = obj;
+
+	if ((obj = _destinationPath))
+		dict[@"Destination"] = obj;
 
 	dict[@"WrapInSrcFolder"] = @(_wrapInSourceFolder);
 
 	dict[@"BasicProps"] = @(_basicProperties);
 	dict[@"AdvProps"] = @(_advancedProperties);
 
-	obj = _additionalOptions;
-	if (obj) dict[@"CustomOpts"] = obj;
+	if ((obj = _additionalOptions))
+		dict[@"CustomOpts"] = obj;
 
 	return [dict copy];
 }
 
 #pragma mark - Getters
 
-- (NSString *)name
+- (NSString *)displayableName
 {
-	return _name ?: NSLocalizedString(@"default", @"Default sync profile name");
+	return _name ?: NSLocalizedString(@"Unnamed", @"Default sync profile name");
 }
 
 - (NSString *)calculatedSourcePath
@@ -141,7 +168,7 @@
 
 	NSArray<NSString *> *additionalArgs =
 	[[_additionalOptions componentsSeparatedByString:@" "]
-	 filteredArrayUsingBlock:^BOOL(NSString *element) {
+	 unx_filtered:^BOOL(NSString *element) {
 		return element.length > 0;
 	}];
 

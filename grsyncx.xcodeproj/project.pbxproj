@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		D630126323CDBDA700D07057 /* SyncingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D630126223CDBDA700D07057 /* SyncingViewController.m */; };
 		D67B6A2023CC777500891072 /* WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = D67B6A1F23CC777500891072 /* WindowController.m */; };
-		EF2B6CD424537795000EFBBF /* SyncProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2B6CD324537795000EFBBF /* SyncProfile.m */; };
+		D68C8D2125ACC4B8004C0F10 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D68C8D2025ACC4B8004C0F10 /* ProfileManager.m */; };
+		EF2B6CD424537795000EFBBF /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = EF2B6CD324537795000EFBBF /* Profile.m */; };
 		EF8658C723CB84C50041726A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658C623CB84C50041726A /* AppDelegate.m */; };
 		EF8658CA23CB84C50041726A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8658C923CB84C50041726A /* MainViewController.m */; };
 		EF8658CC23CB84C80041726A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF8658CB23CB84C80041726A /* Assets.xcassets */; };
@@ -27,8 +28,10 @@
 		D67B6A1F23CC777500891072 /* WindowController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WindowController.m; sourceTree = "<group>"; };
 		D67B6A2123CC78E600891072 /* WindowActionsResponder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WindowActionsResponder.h; sourceTree = "<group>"; };
 		D67B6A2223CC996700891072 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		EF2B6CD224537795000EFBBF /* SyncProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncProfile.h; sourceTree = "<group>"; };
-		EF2B6CD324537795000EFBBF /* SyncProfile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SyncProfile.m; sourceTree = "<group>"; };
+		D68C8D1F25ACC4B8004C0F10 /* ProfileManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileManager.h; sourceTree = "<group>"; };
+		D68C8D2025ACC4B8004C0F10 /* ProfileManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileManager.m; sourceTree = "<group>"; };
+		EF2B6CD224537795000EFBBF /* Profile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
+		EF2B6CD324537795000EFBBF /* Profile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
 		EF8658C223CB84C50041726A /* grsyncx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = grsyncx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8658C523CB84C50041726A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		EF8658C623CB84C50041726A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -72,8 +75,10 @@
 		EF2B6CD12453267B000EFBBF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EF2B6CD224537795000EFBBF /* SyncProfile.h */,
-				EF2B6CD324537795000EFBBF /* SyncProfile.m */,
+				EF2B6CD224537795000EFBBF /* Profile.h */,
+				EF2B6CD324537795000EFBBF /* Profile.m */,
+				D68C8D1F25ACC4B8004C0F10 /* ProfileManager.h */,
+				D68C8D2025ACC4B8004C0F10 /* ProfileManager.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -242,13 +247,14 @@
 			files = (
 				EF8658CA23CB84C50041726A /* MainViewController.m in Sources */,
 				EFB48980245AC5B800CB2788 /* Foundation.m in Sources */,
-				EF2B6CD424537795000EFBBF /* SyncProfile.m in Sources */,
+				EF2B6CD424537795000EFBBF /* Profile.m in Sources */,
 				D67B6A2023CC777500891072 /* WindowController.m in Sources */,
 				D630126323CDBDA700D07057 /* SyncingViewController.m in Sources */,
 				EF8658D223CB84C80041726A /* main.m in Sources */,
 				EFCFDA762459E845008C7853 /* UNXParsable.m in Sources */,
 				EF8658C723CB84C50041726A /* AppDelegate.m in Sources */,
 				EFCFDA702459E5F0008C7853 /* Settings.m in Sources */,
+				D68C8D2125ACC4B8004C0F10 /* ProfileManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

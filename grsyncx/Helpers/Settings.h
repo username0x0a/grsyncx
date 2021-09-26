@@ -7,21 +7,21 @@
 //
 
 #import "Foundation.h"
-#import "SyncProfile.h"
-
-#define SETTINGS_KEY_LAST_USED_PROFILE   "LastUsedProfile"
-#define SETTINGS_KEY_RSYNC_CMD_PATH      "RSyncCommandPath"
+#import "Profile.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Settings : NSObject
 
-+ (instancetype)new  UNAVAILABLE_ATTRIBUTE;
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+@property (nonatomic, copy) NSArray<Profile *> *profiles;
+@property (nonatomic, copy, nullable) NSString *lastUsedProfileID;
+
+@property (nonatomic, copy, nullable) NSString *rsyncCmdPath;
 
 @property (class, nonatomic, readonly) Settings *shared;
 
-@property (nonatomic, strong) SyncProfile *lastUsedProfile;
++ (instancetype)new  UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 @end
 

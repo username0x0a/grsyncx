@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -336,7 +336,7 @@
                                 <toolbarItem implicitItemIdentifier="732AF8FD-B6DA-4A44-9903-52648ACD456C" label="Custom Title" paletteLabel="Custom Title" sizingBehavior="auto" id="BCi-IG-hKb">
                                     <nil key="toolTip"/>
                                     <textField key="view" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="BAO-AL-9bP">
-                                        <rect key="frame" x="0.0" y="14" width="84" height="25"/>
+                                        <rect key="frame" x="1" y="14" width="72" height="21"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" alignment="center" title="grsyncx" usesSingleLineMode="YES" id="7ja-W6-Xav">
                                             <font key="font" metaFont="system" size="18"/>
@@ -345,19 +345,19 @@
                                         </textFieldCell>
                                     </textField>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="5344F61D-1699-49A4-AF15-CC597B369A5C" label="Session" paletteLabel="Session" id="0ug-7w-MyJ">
+                                <toolbarItem implicitItemIdentifier="5344F61D-1699-49A4-AF15-CC597B369A5C" label="Profile" paletteLabel="Profile" id="0ug-7w-MyJ">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="100" height="24"/>
                                     <size key="maxSize" width="140" height="25"/>
                                     <popUpButton key="view" verticalHuggingPriority="750" id="svi-Lb-HCN">
                                         <rect key="frame" x="0.0" y="14" width="100" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <popUpButtonCell key="cell" type="roundTextured" title="default" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="JQv-j2-Ode" id="7mS-5L-pPt">
+                                        <popUpButtonCell key="cell" type="roundTextured" title="Default" bezelStyle="texturedRounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" selectedItem="JQv-j2-Ode" id="7mS-5L-pPt">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="menu"/>
                                             <menu key="menu" id="Btf-rn-5Oj">
                                                 <items>
-                                                    <menuItem title="default" state="on" id="JQv-j2-Ode"/>
+                                                    <menuItem title="Default" state="on" id="JQv-j2-Ode" userLabel="Default"/>
                                                 </items>
                                             </menu>
                                         </popUpButtonCell>
@@ -421,7 +421,7 @@
                                     <nil key="toolTip"/>
                                     <segmentedControl key="view" verticalHuggingPriority="750" id="FDo-9g-6IQ">
                                         <rect key="frame" x="0.0" y="14" width="71" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <autoresizingMask key="autoresizingMask"/>
                                         <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="separated" trackingMode="momentary" id="9tQ-vz-Bfc">
                                             <font key="font" metaFont="system"/>
                                             <segments>
@@ -435,7 +435,10 @@
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="ibi-Rd-XsC"/>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="BCi-IG-hKb"/>
+                                <toolbarItem reference="ibi-Rd-XsC"/>
+                                <toolbarItem reference="5Ol-GX-AXm"/>
+                                <toolbarItem reference="0ug-7w-MyJ"/>
+                                <toolbarItem reference="wly-pY-eTW"/>
                                 <toolbarItem reference="5Ol-GX-AXm"/>
                                 <toolbarItem reference="7os-PB-Kf5"/>
                                 <toolbarItem reference="oMf-0Y-nrz"/>
@@ -465,13 +468,13 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tabView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jrx-Gw-bSi">
-                                <rect key="frame" x="4" y="2" width="476" height="422"/>
+                                <rect key="frame" x="4" y="2" width="475" height="422"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Basic" identifier="" id="Uad-rh-cvd">
                                         <view key="view" id="nsi-MA-SsO">
-                                            <rect key="frame" x="10" y="33" width="456" height="376"/>
+                                            <rect key="frame" x="10" y="33" width="455" height="376"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="63s-aF-BHU">
@@ -494,7 +497,7 @@
                                                     <color key="fillColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                                                 </box>
                                                 <pathControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y2h-o2-ah0">
-                                                    <rect key="frame" x="122" y="333" width="173" height="22"/>
+                                                    <rect key="frame" x="121" y="333" width="173" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <pathCell key="cell" selectable="YES" editable="YES" alignment="left" id="0xm-jS-yY1">
                                                         <font key="font" metaFont="system"/>
@@ -504,7 +507,7 @@
                                                     </connections>
                                                 </pathControl>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Szn-oc-MWP">
-                                                    <rect key="frame" x="297" y="327" width="85" height="32"/>
+                                                    <rect key="frame" x="296" y="327" width="85" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Change…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="We7-93-Kqm">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -526,7 +529,7 @@
                                                     </connections>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bpa-YF-bVq">
-                                                    <rect key="frame" x="127" y="305" width="161" height="20"/>
+                                                    <rect key="frame" x="126" y="305" width="161" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <buttonCell key="cell" type="check" title="Wrap in Source folder" bezelStyle="regularSquare" imagePosition="left" inset="2" id="jMa-3D-3tR">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -534,7 +537,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AkS-4O-VPZ">
-                                                    <rect key="frame" x="286" y="300" width="25" height="25"/>
+                                                    <rect key="frame" x="285" y="300" width="25" height="25"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <buttonCell key="cell" type="help" bezelStyle="helpButton" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bb9-FJ-Sv9">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -564,7 +567,7 @@
                                                     <color key="fillColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                                                 </box>
                                                 <pathControl wantsLayer="YES" verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rhk-OL-h7g">
-                                                    <rect key="frame" x="122" y="267" width="173" height="22"/>
+                                                    <rect key="frame" x="121" y="267" width="173" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <pathCell key="cell" selectable="YES" editable="YES" alignment="left" id="gZe-Dy-bDp">
                                                         <font key="font" metaFont="system"/>
@@ -577,7 +580,7 @@
                                                     </connections>
                                                 </pathControl>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pox-9h-nee">
-                                                    <rect key="frame" x="297" y="261" width="85" height="32"/>
+                                                    <rect key="frame" x="296" y="261" width="85" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                                     <buttonCell key="cell" type="push" title="Change…" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="O6d-Mj-3um">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -588,7 +591,7 @@
                                                     </connections>
                                                 </button>
                                                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="IPi-xH-10o">
-                                                    <rect key="frame" x="17" y="234" width="422" height="5"/>
+                                                    <rect key="frame" x="17" y="234" width="421" height="5"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                 </box>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gBT-6I-076">
@@ -601,7 +604,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SZT-0X-sSG">
-                                                    <rect key="frame" x="236" y="205" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="205" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <string key="toolTip">-p, --perms	Preserve permissions</string>
                                                     <buttonCell key="cell" type="check" title="Preserve permissions" bezelStyle="regularSquare" imagePosition="leading" state="on" inset="2" id="Ekj-gj-iMm">
@@ -619,7 +622,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9TS-mJ-34e">
-                                                    <rect key="frame" x="236" y="176" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="176" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <string key="toolTip">-g, --group	Preserve group</string>
                                                     <buttonCell key="cell" type="check" title="Preserve group" bezelStyle="regularSquare" imagePosition="leading" state="on" inset="2" id="bvM-2N-kE2">
@@ -637,7 +640,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Ir4-Ds-YDC">
-                                                    <rect key="frame" x="17" y="128" width="422" height="5"/>
+                                                    <rect key="frame" x="17" y="128" width="421" height="5"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                 </box>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VKq-gC-kQq">
@@ -650,7 +653,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lkN-nC-j9h">
-                                                    <rect key="frame" x="236" y="98" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="98" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <string key="toolTip">-x, --one-file-system	Don't cross filesystem boundaries</string>
                                                     <buttonCell key="cell" type="check" title="Do not leave filesystem" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="mvL-0f-uTg">
@@ -668,7 +671,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="65G-Ks-kq0">
-                                                    <rect key="frame" x="236" y="69" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="69" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <string key="toolTip">--progress	Show progress during transfer</string>
                                                     <buttonCell key="cell" type="check" title="Show transfer progress" bezelStyle="regularSquare" imagePosition="leading" state="on" inset="2" id="VBt-8V-a42">
@@ -686,7 +689,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sw9-pU-Ebq">
-                                                    <rect key="frame" x="236" y="40" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="40" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <string key="toolTip">--size-only	Skip file that match in size, ignore time and checksum</string>
                                                     <buttonCell key="cell" type="check" title="Size only" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="XUs-r0-lP3">
@@ -704,7 +707,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="etn-Qy-vvP">
-                                                    <rect key="frame" x="236" y="11" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="11" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                                     <string key="toolTip">--modify-window=1	Compare modification times with reduced accuracy, workaround for a FAT FS limitation</string>
                                                     <buttonCell key="cell" type="check" title="Windows compatibility" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="2yr-eX-ojZ">
@@ -717,7 +720,7 @@
                                     </tabViewItem>
                                     <tabViewItem label="Advanced" identifier="" id="QhE-JH-Vpk">
                                         <view key="view" id="47U-RS-6Go">
-                                            <rect key="frame" x="10" y="33" width="456" height="376"/>
+                                            <rect key="frame" x="10" y="33" width="455" height="376"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ggZ-aR-IZd">
@@ -730,7 +733,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3MV-SF-eRw">
-                                                    <rect key="frame" x="236" y="338" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="338" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                                     <string key="toolTip">-z, --compress	Compress data during transfer (if one+ side is remote)</string>
                                                     <buttonCell key="cell" type="check" title="Compress file data" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="0Lj-LO-s4l">
@@ -748,7 +751,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mk1-24-yt1">
-                                                    <rect key="frame" x="236" y="309" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="309" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                                     <string key="toolTip">--existing	Only update existing files, skip new</string>
                                                     <buttonCell key="cell" type="check" title="Only update existing files" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="DXC-w4-Wlx">
@@ -766,7 +769,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ckx-jZ-8KG">
-                                                    <rect key="frame" x="236" y="280" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="280" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                                     <string key="toolTip">--numeric-ids	Keep numeric UID/GID instead of mapping its names</string>
                                                     <buttonCell key="cell" type="check" title="Don't map UID/GID values" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="Q44-8f-yKV">
@@ -784,7 +787,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NzE-t3-pWO">
-                                                    <rect key="frame" x="236" y="251" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="251" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                                     <string key="toolTip">-H, --hard-links	Hard-links are copied as such, do not copy link target file</string>
                                                     <buttonCell key="cell" type="check" title="Preserve hardlinks" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="1ss-es-BjV">
@@ -802,7 +805,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Xv-lp-auQ">
-                                                    <rect key="frame" x="236" y="222" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="222" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                                     <string key="toolTip">-i, --itemize-changes	Show additional information on every changed file</string>
                                                     <buttonCell key="cell" type="check" title="Show itemised changes" bezelStyle="regularSquare" imagePosition="leading" state="on" inset="2" id="IGP-Ww-hPS">
@@ -820,7 +823,7 @@
                                                     </buttonCell>
                                                 </button>
                                                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAR-gC-EyB">
-                                                    <rect key="frame" x="236" y="193" width="205" height="18"/>
+                                                    <rect key="frame" x="235" y="193" width="205" height="18"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
                                                     <string key="toolTip">-s	Protect remote args from shell expansion, avoids the need to manually escape filename args like --exclude</string>
                                                     <buttonCell key="cell" type="check" title="Protect remote args" bezelStyle="regularSquare" imagePosition="leading" inset="2" id="tRV-gW-tek">
@@ -829,11 +832,11 @@
                                                     </buttonCell>
                                                 </button>
                                                 <box verticalHuggingPriority="750" fixedFrame="YES" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="eQV-WA-Qqb">
-                                                    <rect key="frame" x="17" y="164" width="422" height="5"/>
+                                                    <rect key="frame" x="17" y="164" width="421" height="5"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                 </box>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5nV-BM-PdA">
-                                                    <rect key="frame" x="15" y="135" width="426" height="16"/>
+                                                    <rect key="frame" x="15" y="135" width="425" height="16"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Additional arguments:" id="5XH-Ly-qsX">
                                                         <font key="font" metaFont="system"/>
@@ -842,18 +845,18 @@
                                                     </textFieldCell>
                                                 </textField>
                                                 <scrollView fixedFrame="YES" borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KhZ-rE-1ca">
-                                                    <rect key="frame" x="17" y="17" width="422" height="110"/>
+                                                    <rect key="frame" x="17" y="17" width="421" height="110"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                     <clipView key="contentView" copiesOnScroll="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tm1-gn-MQg">
-                                                        <rect key="frame" x="1" y="1" width="420" height="108"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <rect key="frame" x="1" y="1" width="419" height="108"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" smartInsertDelete="YES" id="wPD-hx-ZnU">
-                                                                <rect key="frame" x="0.0" y="0.0" width="420" height="108"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="419" height="102"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                <size key="minSize" width="420" height="108"/>
+                                                                <size key="minSize" width="419" height="102"/>
                                                                 <size key="maxSize" width="422" height="10000000"/>
                                                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                             </textView>
@@ -866,7 +869,7 @@
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="1b9-ry-D0E">
-                                                        <rect key="frame" x="405" y="4" width="16" height="102"/>
+                                                        <rect key="frame" x="404" y="4" width="16" height="102"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                     </scroller>
                                                 </scrollView>
@@ -981,7 +984,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <buttonCell key="cell" type="roundRect" title="Show output" bezelStyle="roundedRect" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="VrU-5a-Js2">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="label" size="12"/>
+                                    <font key="font" metaFont="cellTitle"/>
                                 </buttonCell>
                             </button>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gvW-uY-pIy">
@@ -1021,9 +1024,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSAddTemplate" width="14" height="13"/>
         <image name="NSInfo" width="32" height="32"/>
-        <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="14" height="4"/>
         <image name="icon-chess" width="14" height="14"/>
         <image name="icon-play" width="14" height="14"/>
         <namedColor name="custom_title_color">

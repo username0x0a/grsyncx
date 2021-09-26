@@ -1,5 +1,5 @@
 //
-//  SyncProfile.h
+//  Profile.h
 //  grsyncx
 //
 //  Created by Michi on 24/04/2020.
@@ -73,20 +73,44 @@ typedef NS_OPTIONS(NSUInteger, RSyncAdvancedProp) {
 	RSyncAdvancedPropProtectRemoteArgs = (1 << 11),
 };
 
+#pragma mark - Profile (Read-only protocol)
+
+@protocol ReadonlyProfile <NSObject>
+
+@property (nonatomic, copy, readonly) NSUUID *UUID;
+@property (nonatomic, copy, readonly, nullable) NSString *name;
+
+@property (nonatomic, copy, readonly, nullable) NSString *sourcePath;
+@property (nonatomic, copy, readonly, nullable) NSString *destinationPath;
+
+@property (atomic, readonly) BOOL wrapInSourceFolder;
+
+@property (atomic, readonly) RSyncBasicProp basicProperties;
+@property (atomic, readonly) RSyncAdvancedProp advancedProperties;
+
+@property (nonatomic, copy, readonly, nullable) NSString *additionalOptions;
+
+@property (atomic, readonly) BOOL simulatedRun;
+
+@end
+
 #pragma mark - Profile
 
-@interface SyncProfile : NSObject
+@interface Profile : NSObject <NSCopying, ReadonlyProfile>
 
 #pragma mark Initializers
-
-+ (instancetype)defaultProfile;
 
 - (instancetype)initFromDictionary:(NSDictionary *)dict;
 - (NSDictionary *)asDictionary;
 
 #pragma mark Properties
 
-@property (nonatomic, copy) NSString *name;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
++ (instancetype)new  UNAVAILABLE_ATTRIBUTE;
++ (instancetype)defaultProfile;
+
+@property (nonatomic, copy) NSUUID *UUID;
+@property (nonatomic, copy, nullable) NSString *name;
 
 @property (nonatomic, copy, nullable) NSString *sourcePath;
 @property (nonatomic, copy, nullable) NSString *destinationPath;
@@ -105,6 +129,7 @@ typedef NS_OPTIONS(NSUInteger, RSyncAdvancedProp) {
 
 #pragma mark Methods
 
+@property (nonatomic, copy, readonly) NSString *displayableName;
 @property (nonatomic, copy, readonly, nullable) NSString *calculatedSourcePath;
 @property (nonatomic, copy, readonly, nullable) NSString *calculatedDestinationPath;
 @property (nonatomic, copy, readonly, nullable) NSArray<NSString *> *calculatedArguments;

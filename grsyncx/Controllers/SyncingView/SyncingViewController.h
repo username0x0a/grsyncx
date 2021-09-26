@@ -7,13 +7,13 @@
 //
 
 #import <AppKit/AppKit.h>
-#import "SyncProfile.h"
+#import "Profile.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SyncingViewController : NSViewController
 
-@property (nonatomic, strong, nullable) SyncProfile *profile;
+@property (nonatomic, strong, nullable) Profile *profile;
 
 @end
 

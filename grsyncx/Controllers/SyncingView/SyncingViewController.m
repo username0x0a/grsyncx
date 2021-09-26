@@ -27,7 +27,7 @@
 
 @implementation SyncingViewController
 
-- (instancetype)initWithProfile:(SyncProfile *)profile
+- (instancetype)initWithProfile:(Profile *)profile
 {
 	if (self = [super init])
 	{
@@ -52,7 +52,7 @@
 	window.title = NSLocalizedString(@"Synchronisation", @"Window title");
 	window.minSize = self.view.bounds.size;
 
-	_outputTextView.textContainer.widthTracksTextView = NO;
+	_outputTextView.textContainer.widthTracksTextView = YES;
 	_outputTextView.textContainer.containerSize =
 		NSSizeFromCGSize(CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX));
 }
@@ -117,7 +117,7 @@
 	// rsync --itemize-changes:
 	// http://www.staroceans.org/e-book/understanding-the-output-of-rsync-itemize-changes.html
 
-	SyncProfile *profile = _profile;
+	Profile *profile = _profile;
 
 	NSAssert(profile != nil, @"Sync profile is missing");
 
@@ -126,8 +126,7 @@
 	if (profile.destinationPath) [args addObject:profile.calculatedDestinationPath];
 
 	NSString *rsyncPath = @"/usr/bin/rsync";
-	NSString *customRsyncPath = [[NSUserDefaults standardUserDefaults]
-	                             stringForKey:@SETTINGS_KEY_RSYNC_CMD_PATH];
+	NSString *customRsyncPath = [[Settings shared] rsyncCmdPath];
 
 	if (customRsyncPath.length > 0)
 		rsyncPath = customRsyncPath;

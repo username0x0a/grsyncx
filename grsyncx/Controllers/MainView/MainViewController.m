@@ -10,7 +10,7 @@
 #import "SyncingViewController.h"
 #import "WindowActionsResponder.h"
 
-#import "SyncProfile.h"
+#import "Profile.h"
 #import "Settings.h"
 
 #import <pwd.h>
@@ -104,15 +104,22 @@
 
 	_sourcePathPermissionButton.hidden = [self hasFullDiskAccess];
 
-	// Reload last used profile
-	[self applySyncProfile:_settings.lastUsedProfile];
+	// Load profile to use
+	NSArray<Profile *> *profiles = _settings.profiles;
+	Profile *lastUsedProfile = [profiles unx_filtered:^BOOL(Profile *element) {
+		return [element.UUID.UUIDString isEqual:_settings.lastUsedProfileID];
+	}].firstObject;
+
+	Profile *profile = lastUsedProfile ?: profiles.firstObject ?: [Profile defaultProfile];
+
+	[self applySyncProfile:profile];
 }
 
 - (void)viewWillDisappear
 {
 	[super viewWillDisappear];
 
-	_settings.lastUsedProfile = [self syncProfileForCurrentValues];
+//	_settings.lastUsedProfile = [self syncProfileForCurrentValues];
 }
 
 - (void)setRepresentedObject:(id)representedObject {
@@ -125,7 +132,7 @@
 #pragma mark - Profiles handling
 
 
-- (void)applySyncProfile:(SyncProfile *)profile
+- (void)applySyncProfile:(Profile *)profile
 {
 	NSString *path = nil;
 	NSURL *srcURL = nil;
@@ -161,9 +168,9 @@
 	_additionalOptsTextView.string = profile.additionalOptions ?: @"";
 }
 
-- (SyncProfile *)syncProfileForCurrentValues
+- (Profile *)syncProfileForCurrentValues
 {
-	SyncProfile *prof = [SyncProfile new];
+	Profile *prof = [Profile defaultProfile];
 
 	NSURL *srcURL = _sourcePathCtrl.pathItems.lastObject.URL;
 	NSURL *dstURL = _destinationPathCtrl.pathItems.lastObject.URL;
@@ -375,11 +382,11 @@
 	};
 }
 
-- (void)collectCurrentProfileWithCompletion:(void (NS_NOESCAPE ^)(SyncProfile *, NSString *))completion
+- (void)collectCurrentProfileWithCompletion:(void (NS_NOESCAPE ^)(Profile *, NSString *))completion
 {
 	if (!completion) return;
 
-	SyncProfile *currentProfile = [self syncProfileForCurrentValues];
+	Profile *currentProfile = [self syncProfileForCurrentValues];
 
 	NSString *err = nil;
 
@@ -422,7 +429,7 @@
 			@throw @"Unexpected view controller";
 
 		[self collectCurrentProfileWithCompletion:
-		 ^(SyncProfile *profile, NSString *__unused error) {
+		 ^(Profile *profile, NSString *__unused error) {
 			vc.profile = profile;
 		}];
 	}
@@ -433,7 +440,7 @@
 	_runSimulated = simulated;
 
 	[self collectCurrentProfileWithCompletion:
-	 ^(SyncProfile *__unused profile, NSString *error) {
+	 ^(Profile *__unused profile, NSString *error) {
 
 		if (error) [self showAlertWithTitle:error message:nil];
 		else [self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
