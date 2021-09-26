@@ -18,6 +18,8 @@
 // Deprecated
 #define __SETTINGS_KEY_LAST_USED_PROFILE    "LastUsedProfile"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface Settings ()
 
 @property (nonatomic, strong) NSUserDefaults *defaults;
@@ -31,7 +33,7 @@
 	static Settings *shared = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		shared = [[self alloc] init];
+		shared = [self new];
 	});
 
 	return shared;
@@ -51,6 +53,7 @@
 			[_defaults removeObjectForKey:@__SETTINGS_KEY_LAST_USED_PROFILE];
 			Profile *migratedProfile = [[Profile alloc] initFromDictionary:lastProfileDict];
 			self.profiles = @[ migratedProfile ];
+			self.lastUsedProfileUUID = migratedProfile.UUID;
 		}
 
 //		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -82,24 +85,30 @@
 	[_defaults setObject:profiles forKey:@SETTINGS_KEY_PROFILES];
 }
 
-- (NSString *)lastUsedProfileID
+- (nullable NSUUID *)lastUsedProfileUUID
 {
-	return [_defaults stringForKey:@SETTINGS_KEY_LAST_USED_PROFILE_ID];
+	NSString *uuidString = [_defaults stringForKey:@SETTINGS_KEY_LAST_USED_PROFILE_ID];
+
+	if (!uuidString) return nil;
+
+	return [[NSUUID alloc] initWithUUIDString:uuidString];
 }
 
-- (void)setLastUsedProfileID:(NSString *)lastUsedProfileID
+- (void)setLastUsedProfileUUID:(nullable NSUUID *)lastUsedProfileUUID
 {
-	[_defaults setObject:lastUsedProfileID forKey:@SETTINGS_KEY_LAST_USED_PROFILE_ID];
+	[_defaults setObject:lastUsedProfileUUID.UUIDString forKey:@SETTINGS_KEY_LAST_USED_PROFILE_ID];
 }
 
-- (NSString *)rsyncCmdPath
+- (nullable NSString *)rsyncCmdPath
 {
 	return [_defaults stringForKey:@SETTINGS_KEY_RSYNC_CMD_PATH];
 }
 
-- (void)setRsyncCmdPath:(NSString *)rsyncCmdPath
+- (void)setRsyncCmdPath:(nullable NSString *)rsyncCmdPath
 {
 	[_defaults setObject:rsyncCmdPath forKey:@SETTINGS_KEY_RSYNC_CMD_PATH];
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

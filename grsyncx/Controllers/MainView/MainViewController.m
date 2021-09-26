@@ -10,8 +10,7 @@
 #import "SyncingViewController.h"
 #import "WindowActionsResponder.h"
 
-#import "Profile.h"
-#import "Settings.h"
+#import "ProfileManager.h"
 
 #import <pwd.h>
 
@@ -30,7 +29,9 @@
 
 #pragma mark General
 
-@property (nonatomic, strong) Settings *settings;
+@property (nonatomic, weak) ProfileManager *profileManager;
+
+@property (nonatomic, copy) NSUUID *currentProfileUUID;
 
 #pragma mark Basic properties
 
@@ -92,7 +93,7 @@
 {
 	[super viewDidLoad];
 
-	_settings = [Settings shared];
+	_profileManager = [ProfileManager shared];
 
 	NSString *homePath = [self userHomeFolderPath];
 
@@ -105,21 +106,23 @@
 	_sourcePathPermissionButton.hidden = [self hasFullDiskAccess];
 
 	// Load profile to use
-	NSArray<Profile *> *profiles = _settings.profiles;
-	Profile *lastUsedProfile = [profiles unx_filtered:^BOOL(Profile *element) {
-		return [element.UUID.UUIDString isEqual:_settings.lastUsedProfileID];
-	}].firstObject;
+	ReadonlyProfile *profile = _profileManager.lastUsedProfile ?:
+	                           _profileManager.allProfiles.firstObject ?:
+	                           [Profile defaultProfile];
 
-	Profile *profile = lastUsedProfile ?: profiles.firstObject ?: [Profile defaultProfile];
-
-	[self applySyncProfile:profile];
+	[self applyProfile:profile];
 }
 
 - (void)viewWillDisappear
 {
 	[super viewWillDisappear];
 
-//	_settings.lastUsedProfile = [self syncProfileForCurrentValues];
+	NSUUID *currentUUID;
+
+	if ((currentUUID = _currentProfileUUID)) {
+		Profile *currentValues = [self syncProfileForCurrentValues];
+		[_profileManager updateProfileWithUUID:currentUUID withValuesFromProfile:currentValues];
+	}
 }
 
 - (void)setRepresentedObject:(id)representedObject {
@@ -132,8 +135,10 @@
 #pragma mark - Profiles handling
 
 
-- (void)applySyncProfile:(Profile *)profile
+- (void)applyProfile:(ReadonlyProfile *)profile
 {
+	_currentProfileUUID = profile.UUID;
+
 	NSString *path = nil;
 	NSURL *srcURL = nil;
 	NSURL *dstURL = nil;

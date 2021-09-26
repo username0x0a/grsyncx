@@ -75,7 +75,7 @@ typedef NS_OPTIONS(NSUInteger, RSyncAdvancedProp) {
 
 #pragma mark - Profile (Read-only protocol)
 
-@protocol ReadonlyProfile <NSObject>
+@protocol GRReadonlyProfile <NSObject>
 
 @property (nonatomic, copy, readonly) NSUUID *UUID;
 @property (nonatomic, copy, readonly, nullable) NSString *name;
@@ -96,7 +96,9 @@ typedef NS_OPTIONS(NSUInteger, RSyncAdvancedProp) {
 
 #pragma mark - Profile
 
-@interface Profile : NSObject <NSCopying, ReadonlyProfile>
+typedef NSObject<GRReadonlyProfile> ReadonlyProfile;
+
+@interface Profile : NSObject <NSCopying, GRReadonlyProfile>
 
 #pragma mark Initializers
 
