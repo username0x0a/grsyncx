@@ -424,7 +424,7 @@
 	completion(currentProfile, nil);
 }
 
-- (void)prepareForSegue:(__unused NSStoryboardSegue *)segue sender:(__unused id)sender
+- (void)prepareForSegue:(NSStoryboardSegue *)segue sender:(__unused id)sender
 {
 	if ([segue.identifier isEqualToString:@"SyncingSegue"])
 	{
@@ -450,12 +450,24 @@
 		if (error) [self showAlertWithTitle:error message:nil];
 		else [self performSegueWithIdentifier:@"SyncingSegue" sender:nil];
 
+		[self performSegueWithIdentifier:@"NewProfileSeque" sender:nil];
+
 	}];
 }
 
 
 #pragma mark - Window actions responder
 
+
+- (void)didReceiveAddProfileAction
+{
+
+}
+
+- (void)didReceiveDeleteProfileAction
+{
+
+}
 
 - (void)didReceiveSimulateAction
 {

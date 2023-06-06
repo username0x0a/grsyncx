@@ -92,6 +92,11 @@ typedef NS_OPTIONS(NSUInteger, RSyncAdvancedProp) {
 
 @property (atomic, readonly) BOOL simulatedRun;
 
+@property (nonatomic, copy, readonly) NSString *displayableName;
+@property (nonatomic, copy, readonly, nullable) NSString *calculatedSourcePath;
+@property (nonatomic, copy, readonly, nullable) NSString *calculatedDestinationPath;
+@property (nonatomic, copy, readonly, nullable) NSArray<NSString *> *calculatedArguments;
+
 @end
 
 #pragma mark - Profile

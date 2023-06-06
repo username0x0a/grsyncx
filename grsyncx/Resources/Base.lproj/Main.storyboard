@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -345,7 +345,7 @@
                                         </textFieldCell>
                                     </textField>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="5344F61D-1699-49A4-AF15-CC597B369A5C" label="Profile" paletteLabel="Profile" id="0ug-7w-MyJ">
+                                <toolbarItem implicitItemIdentifier="5344F61D-1699-49A4-AF15-CC597B369A5C" label="Profile" paletteLabel="Profile" title="Default" id="0ug-7w-MyJ">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="100" height="24"/>
                                     <size key="maxSize" width="140" height="25"/>
@@ -425,11 +425,14 @@
                                         <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="separated" trackingMode="momentary" id="9tQ-vz-Bfc">
                                             <font key="font" metaFont="system"/>
                                             <segments>
-                                                <segment image="NSAddTemplate" width="32"/>
-                                                <segment image="NSRemoveTemplate" width="32" enabled="NO" tag="1"/>
+                                                <segment image="NSAddTemplate" width="32" tag="1"/>
+                                                <segment image="NSRemoveTemplate" width="32" tag="2"/>
                                             </segments>
                                         </segmentedCell>
                                     </segmentedControl>
+                                    <connections>
+                                        <action selector="addDeleteButton:" target="B8D-0N-5wS" id="hi5-X6-5NG"/>
+                                    </connections>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="5Ol-GX-AXm"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="ibi-Rd-XsC"/>
@@ -452,6 +455,7 @@
                         </connections>
                     </window>
                     <connections>
+                        <outlet property="addDeleteButton" destination="FDo-9g-6IQ" id="SiP-jK-wUs"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>
@@ -849,7 +853,7 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                     <clipView key="contentView" copiesOnScroll="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tm1-gn-MQg">
                                                         <rect key="frame" x="1" y="1" width="419" height="108"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsUndo="YES" smartInsertDelete="YES" id="wPD-hx-ZnU">
                                                                 <rect key="frame" x="0.0" y="0.0" width="419" height="102"/>
@@ -915,6 +919,7 @@
                         <outlet property="wrapInSourceFolderButton" destination="Bpa-YF-bVq" id="Z1A-8O-b2v"/>
                         <outlet property="wrapInSourceFolderHelpButton" destination="AkS-4O-VPZ" id="YPm-88-AJE"/>
                         <segue destination="1gg-O1-zBQ" kind="sheet" identifier="SyncingSegue" id="44R-jJ-B6Y"/>
+                        <segue destination="iXM-8N-zcm" kind="sheet" identifier="NewProfileSeque" id="Qwz-No-k3Y"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1021,6 +1026,59 @@
                 <customObject id="fOd-SN-yX7" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="811" y="807.5"/>
+        </scene>
+        <!--New Profile View Controller-->
+        <scene sceneID="MfM-my-m06">
+            <objects>
+                <viewController id="iXM-8N-zcm" userLabel="New Profile View Controller" sceneMemberID="viewController">
+                    <view key="view" id="Vio-zE-RuO">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="125"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YQm-Xf-PNo">
+                                <rect key="frame" x="15" y="47" width="269" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="l4K-W8-a0Q">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TbK-j3-duZ">
+                                <rect key="frame" x="182" y="9" width="109" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Create" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="I03-41-feu">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <color key="bezelColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lkd-mu-mLn">
+                                <rect key="frame" x="108" y="9" width="76" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4l7-5u-eBd">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OEe-Md-bgp">
+                                <rect key="frame" x="13" y="76" width="114" height="16"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="New profile name:" id="WXn-cy-RgT">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="rfr-zJ-oop" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-575" y="838"/>
         </scene>
     </scenes>
     <resources>

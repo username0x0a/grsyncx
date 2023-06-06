@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SyncingViewController : NSViewController
 
-@property (nonatomic, strong, nullable) Profile *profile;
+@property (nonatomic, strong, nullable) ReadonlyProfile *profile;
 
 @end
 

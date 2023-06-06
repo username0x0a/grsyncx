@@ -27,16 +27,6 @@
 
 @implementation SyncingViewController
 
-- (instancetype)initWithProfile:(Profile *)profile
-{
-	if (self = [super init])
-	{
-		_profile = profile;
-	}
-
-	return self;
-}
-
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
@@ -117,7 +107,7 @@
 	// rsync --itemize-changes:
 	// http://www.staroceans.org/e-book/understanding-the-output-of-rsync-itemize-changes.html
 
-	Profile *profile = _profile;
+	ReadonlyProfile *profile = _profile;
 
 	NSAssert(profile != nil, @"Sync profile is missing");
 

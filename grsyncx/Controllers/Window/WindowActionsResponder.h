@@ -12,6 +12,8 @@
 @protocol WindowActionsResponder <NSObject>
 
 @required
+- (void)didReceiveAddProfileAction;
+- (void)didReceiveDeleteProfileAction;
 - (void)didReceiveSimulateAction;
 - (void)didReceiveExecuteAction;
 

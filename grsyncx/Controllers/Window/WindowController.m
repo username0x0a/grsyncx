@@ -8,9 +8,12 @@
 
 #import "WindowController.h"
 #import "WindowActionsResponder.h"
+#import "UNXParsable.h"
 
 
 @interface WindowController () <NSToolbarDelegate>
+
+@property (nonatomic, weak) IBOutlet NSSegmentedControl *addDeleteButton;
 
 @property (nonatomic, weak) id<WindowActionsResponder> actionsResponder;
 
@@ -30,6 +33,10 @@
 	else @throw @"Invalid Window actions responder";
 }
 
+// Note: `__unused` flag may cause these selectors not being visible
+//       to Interface Builder. Add it later after making a connection
+//       in the Interface Builder UI.
+
 - (IBAction)simulateButton:(__unused id)sender
 {
 	const id<WindowActionsResponder> resp = _actionsResponder;
@@ -40,6 +47,14 @@
 {
 	const id<WindowActionsResponder> resp = _actionsResponder;
 	[resp didReceiveExecuteAction];
+}
+
+- (IBAction)addDeleteButton:(__unused id)sender
+{
+	NSInteger tag = _addDeleteButton.selectedTag;
+
+	if (tag == 1) NSLog(@"Add");
+	if (tag == 2) NSLog(@"Delete");
 }
 
 @end
